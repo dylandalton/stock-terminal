@@ -11,6 +11,8 @@ npm install react-router-dom
 Shadcn UI Setup:
 npm install tailwindcss-animate class-variance-authority clsx tailwind-merge lucide-react
 
+Installing a Radix-ui component used in Shadcn:
+npm install @radix-ui/react-slot@latest -E 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

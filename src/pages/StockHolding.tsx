@@ -4,7 +4,6 @@ import { CircleArrowLeft } from 'lucide-react';
 import { useGetStockQuery } from "@/services/StocksApi";
 import { Spinner } from "@/components/ui/spinner";
 import { Card } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
 
 const StockHolding = () => {
     const { symbol } = useParams();
@@ -24,7 +23,7 @@ const StockHolding = () => {
             </button>
         </div>
     );
-    
+
     const stockHolding = data?.["Global Quote"];
     console.log(stockHolding);
 
@@ -36,10 +35,9 @@ const StockHolding = () => {
                     to="/"
                     className="text-indigo-500 hover:text-indigo-600 flex items-center"
                     >
-                    <CircleArrowLeft />Back to Portfolio Dashboard
+                    <CircleArrowLeft className="mr-2" /> Back to Portfolio Dashboard
                     </Link>
                 </div>
-                <h1 className="text-xl font-bold text-red-500">Hello Tailwind Red</h1>
             </section>
         </>
     );

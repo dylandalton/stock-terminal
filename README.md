@@ -1,6 +1,15 @@
 # React + TypeScript + Vite
 
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+Check tailwind setup process for Vite React - need to modify config
+https://tailwindcss.com/docs/guides/vite
+
 npm install react-redux @reduxjs/toolkit millify moment
+
+Shadcn UI Setup:
+npm install tailwindcss-animate class-variance-authority clsx tailwind-merge lucide-react
+
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

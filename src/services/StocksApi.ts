@@ -11,7 +11,7 @@ export const stocksApi = createApi({
     }),
     endpoints: (builder) => ({
         getStock: builder.query({
-            query: (symbol) => `/query/${symbol}`,
+            query: (symbol) => `?function=GLOBAL_QUOTE&symbol=${symbol}&datatype=json`,
         })
     })
 });

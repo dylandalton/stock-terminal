@@ -6,6 +6,7 @@ Check tailwind setup process for Vite React - need to modify config
 https://tailwindcss.com/docs/guides/vite
 
 npm install react-redux @reduxjs/toolkit millify moment
+npm install react-router-dom
 
 Shadcn UI Setup:
 npm install tailwindcss-animate class-variance-authority clsx tailwind-merge lucide-react

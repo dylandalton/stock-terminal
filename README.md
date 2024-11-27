@@ -9,7 +9,7 @@ npm install react-redux @reduxjs/toolkit millify moment
 npm install react-router-dom
 
 Shadcn UI Setup:
-npm install tailwindcss-animate class-variance-authority clsx tailwind-merge lucide-react
+Follow VITE guide NOT manual
 
 Installing a Radix-ui component used in Shadcn:
 npm install @radix-ui/react-slot@latest -E 

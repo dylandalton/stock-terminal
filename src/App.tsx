@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { 
   Route,
@@ -9,6 +6,7 @@ import {
 } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
+import StockHolding from './pages/StockHolding';
 
 function App() {
 
@@ -16,6 +14,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/holdings/:symbol" element={<StockHolding />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

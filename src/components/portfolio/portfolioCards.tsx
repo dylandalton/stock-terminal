@@ -1,6 +1,7 @@
 import { StatsCard } from "./statsCard";
 import { usePortfolioStats } from "@/lib/hooks/usePortfolioStats";
 import { Position } from "@/lib/types/portfolio";
+import { formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
 
 export interface PortfolioCardsProps {
   positions: Position[];
@@ -8,15 +9,6 @@ export interface PortfolioCardsProps {
 
 export function PortfolioCards({ positions }: PortfolioCardsProps) {
   const { stats, isLoading } = usePortfolioStats(positions);
-
-  const formatCurrency = (value: number) =>
-    new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(value);
-
-  const formatPercentage = (value: number) =>
-    `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

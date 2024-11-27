@@ -20,3 +20,12 @@ export function calculatePortfolioStats(positions: Position[]): PortfolioStats {
     percentageIncrease,
   };
 }
+
+export const formatCurrency = (value: number) =>
+  new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(value);
+
+export const formatPercentage = (value: number) =>
+  `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;

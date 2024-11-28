@@ -1,5 +1,6 @@
 import Portfolio from "../models/portfolio.model.js";
 import mongoose from "mongoose";
+import { validatePortfolio, validateHolding } from "../utils/portfolioValidation.util.js";
 
 export const getPortfolios = async (req, res) => {
     try{
@@ -65,13 +66,8 @@ export const deletePortfolio = async (req, res) => {
 export const getPortfolioHoldings = async (req, res) => {
   try{
     const {id} = req.params;
-    const portfolio = await Portfolio.findById(id).select('holdings');
-
-    if(!portfolio){
-      res.status(404).json({ success: false, message: 'Portfolio not found' });
-    } else {
-      res.status(200).json({ success: true, data: portfolio.holdings });
-    }
+    const portfolio = await validatePortfolio(Portfolio, id);
+    res.status(200).json({ success: true, data: portfolio.holdings });
   } catch (error) {
     console.error('failed to fetch holdings: ', error);
     res.status(500).json({success: false, message: "Internal Server Error"});
@@ -81,19 +77,9 @@ export const getPortfolioHoldings = async (req, res) => {
 export const getHolding = async (req, res) => {
   try {
     const { id, holdingId } = req.params;
-    const portfolio = await Portfolio.findById(id);
-
-    if (!portfolio) {
-      res.status(404).json({ success: false, message: 'Portfolio not found' });
-    } else {
-      const holding = portfolio.holdings.find((h) => h._id.toString() === holdingId);
-
-      if (!holding) {
-        res.status(404).json({ success: false, message: 'Holding not found' });
-      } else {
-        res.status(200).json({ success: true, data: holding });
-      }
-    }
+    const portfolio = await validatePortfolio(Portfolio, id);
+    const holding = await validateHolding(portfolio, holdingId);
+    res.status(200).json({ success: true, data: holding });
   } catch (error) {
     console.error('Failed to fetch holding: ', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
@@ -101,89 +87,63 @@ export const getHolding = async (req, res) => {
 };
 
 export const createHolding = async (req, res) => {
-  const holding = req.body;
   try {
     const { id } = req.params;
-    const portfolio = await Portfolio.findById(id);
+    const portfolio = await validatePortfolio(Portfolio, id);
+    const holding = req.body;
 
-    if (!portfolio) {
-      res.status(404).json({ success: false, message: 'Portfolio not found' });
+    const requiredFields = ['symbol', 'shares', 'averagePrice'];
+    const missingFields = requiredFields.filter((field) => !holding[field]);
+
+    if (missingFields.length > 0) {
+      res.status(400).json({ success: false, message: 'Please provide all required fields' });
     } else {
-      if (!holding.symbol || !holding.shares || !holding.averagePrice) {
-        res.status(400).json({ success: false, message: 'Please provide all required fields' });
-      } else {
-        const newHolding = {
-          symbol: holding.symbol,
-          companyName: holding.companyName,
-          shares: holding.shares,
-          averagePrice: holding.averagePrice,
-        };
-        portfolio.holdings.push(newHolding);
-        portfolio.markModified('holdings');
-        await portfolio.save();
+      portfolio.holdings.push(holding);
+      portfolio.markModified('holdings');
+      await portfolio.save();
 
-        res.status(201).json({ success: true, message: 'Holding created successfully', data: newHolding });
-      }
+      res.status(201).json({ success: true, message: 'Holding created successfully', data: holding });
     }
-
   } catch (error) {
     console.error('Failed to create holding: ', error);
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
+    res.status(error.status || 500).json({ success: false, message: error.message || 'Internal Server Error' });
   }
 };
 
 export const updateHolding = async (req, res) => {
   try {
     const { id, holdingId } = req.params;
-    const portfolio = await Portfolio.findById(id);
+    const portfolio = await validatePortfolio(Portfolio, id);
+    const updates = req.body;
 
-    if (!portfolio) {
-      res.status(404).json({ success: false, message: 'Portfolio not found' });
-    } else {
-      const holding = portfolio.holdings.id(holdingId);
+    const holding = portfolio.holdings.id(holdingId);
 
-      if (!holding) {
-        res.status(404).json({ success: false, message: 'Holding not found' });
-      } else {
-        const { symbol, companyName, shares, averagePrice } = req.body;
+    Object.keys(updates).forEach((key) => {
+      console.log("Holding", holding);
+      holding[key] = updates[key];
+    });
 
-        if (symbol) holding.symbol = symbol;
-        if (companyName) holding.companyName = companyName;
-        if (shares) holding.shares = shares;
-        if (averagePrice) holding.averagePrice = averagePrice;
+    portfolio.markModified('holdings');
+    await portfolio.save();
 
-        portfolio.markModified('holdings');
-        await portfolio.save();
-
-        res.status(200).json({ success: true, message: 'Holding updated successfully', data: holding });
-      }
-    }
+    res.status(200).json({ success: true, message: 'Holding updated successfully', data: holding });
   } catch (error) {
     console.error('Failed to update holding: ', error);
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
+    res.status(error.status || 500).json({ success: false, message: error.message || 'Internal Server Error' });
   }
 };
 
 export const deleteHolding = async (req, res) => {
   try {
     const { id, holdingId } = req.params;
-    const portfolio = await Portfolio.findById(id);
+    const portfolio = await validatePortfolio(Portfolio, id);
+    await validateHolding(portfolio, holdingId);
 
-    if (!portfolio) {
-      res.status(404).json({ success: false, message: 'Portfolio not found' });
-    } else {
-      const holding = portfolio.holdings.id(holdingId);
+    portfolio.holdings.pull(holdingId);
+    portfolio.markModified('holdings');
+    await portfolio.save();
 
-      if (!holding) {
-        res.status(404).json({ success: false, message: 'Holding not found' });
-      } else {
-        portfolio.holdings.pull(holdingId);
-        portfolio.markModified('holdings');
-        await portfolio.save();
-
-        res.status(200).json({ success: true, message: 'Holding deleted successfully' });
-      }
-    }
+    res.status(200).json({ success: true, message: 'Holding deleted successfully' });
   } catch (error) {
     console.error('Failed to delete holding: ', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });

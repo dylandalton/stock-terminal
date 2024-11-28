@@ -23,7 +23,7 @@ app.get('/api/portfolios', async (req, res) => {
 app.post('/api/portfolios', async (req, res) => {
     const portfolio = req.body; // User request body
 
-    if(!portfolio?.symbol || !portfolio?.shares || !portfolio?.averagePrice){
+    if(!portfolio?.holdings || !portfolio?.user){
       return res.status(400).json({
         success: false, 
         message: "Please fill in required fields"

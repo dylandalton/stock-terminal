@@ -1,27 +1,28 @@
 # React + TypeScript + Redux + Tailwind css + Shadcn ui 
 
 ## Setting up the project
- - Check tailwind setup process for Vite React - config modification required
- - [tailwind css](https://tailwindcss.com/docs/guides/vite)
+Check tailwind setup process for Vite React - config modification required: [tailwind css](https://tailwindcss.com/docs/guides/vite)
 ```js
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
 
-- Install the other required dependencies
-Shadcn ui for Vite installation guide:
-[Shadcn ui](https://ui.shadcn.com/docs/installation/vite)
+Install the other required dependencies
+- Shadcn ui for Vite installation guide: [Shadcn ui](https://ui.shadcn.com/docs/installation/vite)
 ```js
 npm install react-redux @reduxjs/toolkit millify moment
 npm install react-router-dom
 ```
 
-Shadcn UI Setup:
-Follow VITE guide NOT manual
-
-- Installing a Radix-ui component used in Shadcn:
+Installing a Radix-ui component used in Shadcn:
 ```js
 npm install @radix-ui/react-slot@latest -E 
+```
+
+- Backend Express js server setup
+```js
+npm install express mongoose dotenv
+npm i nodemon -D
 ```
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

@@ -1,6 +1,4 @@
 import { StatsCard } from "./statsCard";
-import { usePortfolioStats } from "@/lib/hooks/usePortfolioStats";
-import { Position } from "@/lib/types/portfolio";
 import { formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
 import { Holding } from "@/models/User";
 
@@ -11,7 +9,7 @@ export function PortfolioCards({ positions }: { positions: Holding[] }) {
   const totalIncrease = holdings.reduce((acc, holding) => acc + (holding.shares * currentPrice) - (holding.shares * holding.averagePrice), 0);
   const percentageIncrease = (totalIncrease / totalValue) * 100;
 
-  const isLoading = false; // You may need to implement loading logic here
+  const isLoading = false; // may need to implement loading logic here
 
   const stats = {
     totalValue,

@@ -1,11 +1,13 @@
 import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { PortfolioCardsProps } from "./portfolioCards"
 import { usePortfolioStats } from "@/lib/hooks/usePortfolioStats";
 import { formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
+import { Holding } from "@/models/User";
 
-const Portfolio = ({ positions }: PortfolioCardsProps) => {
+const Portfolio = ({ positions }: { positions: Holding[]}) => {
   const { stats } = usePortfolioStats(positions);
+  const currentPrice = 150; // Hardcoded current price
+
     return (
         <>
         <Card>
@@ -27,9 +29,12 @@ const Portfolio = ({ positions }: PortfolioCardsProps) => {
                   <TableCell className="font-medium">{holding.symbol}</TableCell>
                   <TableCell >{holding.shares}</TableCell>
                   <TableCell>{formatCurrency(holding.averagePrice)}</TableCell>
-                  <TableCell>{formatCurrency(holding.currentPrice)}</TableCell>
-                  <TableCell>{formatCurrency(holding.profitLoss)}</TableCell>
-                  <TableCell className="text-right">{formatPercentage(holding.pnl)}</TableCell>
+                  <TableCell>{formatCurrency(currentPrice)}</TableCell>
+                  <TableCell>{formatCurrency(1500)}</TableCell>
+                  <TableCell className="text-right">{formatPercentage(25)}</TableCell>
+                  {/* <TableCell>{formatCurrency(holding.currentPrice)}</TableCell>   Currently hardcoded, fetch from API
+                  <TableCell>{formatCurrency(holding.profitLoss)}</TableCell>   Implement function to calculate
+                  <TableCell className="text-right">{formatPercentage(holding.pnl)}</TableCell>    Implement function to calculate*/}
                 </TableRow>
               ))}
             </TableBody>

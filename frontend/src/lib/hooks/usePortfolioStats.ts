@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Position, PortfolioStats } from '@/lib/types/portfolio';
+import { PortfolioStats } from '@/lib/types/portfolio';
 import { calculatePortfolioStats } from '@/lib/utils/portfolioCalculations';
+import { Holding } from '@/models/User';
 
-export function usePortfolioStats(positions: Position[]): { 
+export function usePortfolioStats(positions: Holding[]): { 
   stats: PortfolioStats; 
   isLoading: boolean;
 } {

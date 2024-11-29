@@ -7,7 +7,11 @@
 - [x] Modify DB collection to include profile images
 - [x] Create three users in DB, with profile images
 - [x] Pass user's portfolio from loginPage to HomePage after navigation (Redux)
-- [] PortfolioCards & Portfolio required current prices for each holding (use AlphaVantage)
+- [] PortfolioCards & Portfolio components require current prices for each holding (use AlphaVantage), implement in HomePage, share as props
+- [] Share current price with Portfolio.tsx component for currentPrice field in table
+- [] Implement functions in Portfolio.tsx component to calculate PNL % and Profit/Loss based on user holdings data
+- [] Ensure than once a user has navigated to homepage, userSelected remains selected in LoginPage
+- [] Ensure that once a user navigates to the homepage, portfolio holdings data remains there even if they leave the page
 
 ## Setting up the project
 Check tailwind setup process for Vite React - config modification required: [tailwind css](https://tailwindcss.com/docs/guides/vite)

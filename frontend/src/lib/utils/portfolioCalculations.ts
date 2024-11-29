@@ -1,13 +1,15 @@
-import { Position, PortfolioStats } from '../types/portfolio';
+import { Holding } from '@/models/User';
+import { PortfolioStats } from '../types/portfolio';
 
-export function calculatePortfolioStats(positions: Position[]): PortfolioStats {
+export function calculatePortfolioStats(positions: Holding[]): PortfolioStats {
+  const currentPrice = 150; // Hardcoded current price
   const totalValue = positions.reduce(
-    (sum, position) => sum + position.shares * position.currentPrice,
+    (sum, holding) => sum + holding.shares * currentPrice,
     0
   );
 
   const totalCost = positions.reduce(
-    (sum, position) => sum + position.shares * position.averagePrice,
+    (sum, holding) => sum + holding.shares * holding.averagePrice,
     0
   );
 

@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const stocksApi = createApi({
+    reducerPath: 'stocks',
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://alpha-vantage.p.rapidapi.com/query',
         prepareHeaders: (headers) => {

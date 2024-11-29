@@ -1,38 +1,19 @@
-import Portfolio from '../models/portfolio.model.js';
-
-export const validatePortfolio = async (Portfolio, id) => {
+export const validatePortfolio = async (portfolio, id) => {
     try {
-      const portfolio = await Portfolio.findById(id).exec();
+      const userPf = await portfolio.findById(id).exec();
   
-      if (!portfolio) {
+      if (!userPf) {
         throw {
           status: 404,
           message: 'Portfolio not found',
         };
       }
   
-      return portfolio;
+      return userPf;
     } catch (error) {
       throw error;
     }
   };
-  
-// export const validateHolding = async (portfolio, holdingId) => {
-//   try {
-//     const holding = portfolio.holdings.id(holdingId);
-
-//     if (!holding) {
-//       throw {
-//         status: 404,
-//         message: 'Holding not found',
-//       };
-//     }
-
-//     return holding;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
 
 export const validateHolding = async (portfolio, symbol) => {
   try {

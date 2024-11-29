@@ -76,9 +76,9 @@ export const getPortfolioHoldings = async (req, res) => {
 
 export const getHolding = async (req, res) => {
   try {
-    const { id, holdingId } = req.params;
+    const { id, symbol } = req.params;
     const portfolio = await validatePortfolio(Portfolio, id);
-    const holding = await validateHolding(portfolio, holdingId);
+    const holding = await validateHolding(portfolio, symbol);
     res.status(200).json({ success: true, data: holding });
   } catch (error) {
     console.error('Failed to fetch holding: ', error);
@@ -112,14 +112,20 @@ export const createHolding = async (req, res) => {
 
 export const updateHolding = async (req, res) => {
   try {
-    const { id, holdingId } = req.params;
+    const { id, symbol } = req.params;
     const portfolio = await validatePortfolio(Portfolio, id);
     const updates = req.body;
 
-    const holding = portfolio.holdings.id(holdingId);
+    const holding = portfolio.holdings.find(h => h.symbol === symbol);
+
+    if (!holding) {
+      throw {
+        status: 404,
+        message: 'Holding not found',
+      };
+    }
 
     Object.keys(updates).forEach((key) => {
-      console.log("Holding", holding);
       holding[key] = updates[key];
     });
 
@@ -135,17 +141,25 @@ export const updateHolding = async (req, res) => {
 
 export const deleteHolding = async (req, res) => {
   try {
-    const { id, holdingId } = req.params;
+    const { id, symbol } = req.params;
     const portfolio = await validatePortfolio(Portfolio, id);
-    await validateHolding(portfolio, holdingId);
 
-    portfolio.holdings.pull(holdingId);
+    const holdingIndex = portfolio.holdings.findIndex(h => h.symbol === symbol);
+
+    if (holdingIndex === -1) {
+      throw {
+        status: 404,
+        message: 'Holding not found',
+      };
+    }
+
+    portfolio.holdings.splice(holdingIndex, 1);
     portfolio.markModified('holdings');
     await portfolio.save();
 
     res.status(200).json({ success: true, message: 'Holding deleted successfully' });
   } catch (error) {
     console.error('Failed to delete holding: ', error);
-    res.status(500).json({ success: false, message: 'Internal Server Error' });
+    res.status(error.status || 500).json({ success: false, message: error.message || 'Internal Server Error' });
   }
 };

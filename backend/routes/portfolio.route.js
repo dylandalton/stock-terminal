@@ -20,9 +20,9 @@ router.delete('/:id', deletePortfolio);
 
 // Holdings endpoints
 router.get('/:id/holdings', getPortfolioHoldings);
-router.get('/:id/holdings/:holdingId', getHolding);
+router.get('/:id/holdings/:symbol', getHolding);
 router.post('/:id/holdings', createHolding);
-router.put('/:id/holdings/:holdingId', updateHolding);
-router.delete('/:id/holdings/:holdingId', deleteHolding);
+router.put('/:id/holdings/:symbol', updateHolding);
+router.delete('/:id/holdings/:symbol', deleteHolding);
 
 export default router;

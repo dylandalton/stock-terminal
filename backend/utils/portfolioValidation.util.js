@@ -17,19 +17,36 @@ export const validatePortfolio = async (Portfolio, id) => {
     }
   };
   
-  export const validateHolding = async (portfolio, holdingId) => {
-    try {
-      const holding = portfolio.holdings.id(holdingId);
-  
-      if (!holding) {
-        throw {
-          status: 404,
-          message: 'Holding not found',
-        };
-      }
-  
-      return holding;
-    } catch (error) {
-      throw error;
+// export const validateHolding = async (portfolio, holdingId) => {
+//   try {
+//     const holding = portfolio.holdings.id(holdingId);
+
+//     if (!holding) {
+//       throw {
+//         status: 404,
+//         message: 'Holding not found',
+//       };
+//     }
+
+//     return holding;
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+export const validateHolding = async (portfolio, symbol) => {
+  try {
+    const holding = portfolio.holdings.find(holding => holding.symbol === symbol);
+
+    if (!holding) {
+      throw {
+        status: 404,
+        message: 'Holding not found',
+      };
     }
-  };
+
+    return holding;
+  } catch (error) {
+    throw error;
+  }
+};

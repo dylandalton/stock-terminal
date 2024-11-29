@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const holdingSchema = mongoose.Schema({
   symbol: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   companyName: {
     type: String
@@ -25,7 +26,8 @@ const portfolioSchema = mongoose.Schema({
   },
   holdings: [holdingSchema]
 }, {
-  timestamps: true // createdAt, updatedAt
+  timestamps: true, // createdAt, updatedAt
+  indexes: [{ fields: { 'holdings.symbol': 1 }, options: { unique: true } }]
 });
 
 const Portfolio = mongoose.model('Portfolio', portfolioSchema);

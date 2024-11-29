@@ -30,15 +30,7 @@ const positions: Position[] = [
   },
 ];
 
-// Create login page, where user will select an Account (The User/ PortofioId corresponds in the DB)
-// Then once selected, navigate to the homepage, and fetch that user's portfolio (perhaps from the store using Redux)
-
 const HomePage = () => {
-  const { data, isFetching } = useGetPortfoliosQuery({});
-
-  const portfolios = data;
-  console.log(portfolios);
-
   return (
     <>
       <PortfolioCards positions={positions}/>

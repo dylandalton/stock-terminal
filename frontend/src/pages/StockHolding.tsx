@@ -32,7 +32,7 @@ const StockHolding = () => {
             <section>
                 <div className="container m-auto py-6 px-6">
                     <Link
-                    to="/"
+                    to="/home"
                     className="text-indigo-500 hover:text-indigo-600 flex items-center"
                     >
                     <CircleArrowLeft className="mr-2" /> Back to Portfolio Dashboard

@@ -1,10 +1,9 @@
 import LoginCard from '@/components/login/login-card';
 import { Spinner } from '@/components/ui/spinner';
+import { User } from '@/models/User';
 import { useGetPortfoliosQuery } from '@/services/PortfoliosApi';
 
 const LoginPage = () => {
-    // Create login page, where user will select an Account (The User/ PortofioId corresponds in the DB)
-    // Then once selected, navigate to the homepage, and fetch that user's portfolio (perhaps from the store using Redux)
 
     const { data, isFetching } = useGetPortfoliosQuery({});
 
@@ -21,12 +20,12 @@ const LoginPage = () => {
         </div>
     );
 
-    const portfolios = data;
-    console.log(portfolios);
+    const portfolios: User[] = data?.data;
+    console.log("Fetched from MongoDB: ", portfolios);
 
     return (
         <>
-            <LoginCard />
+            <LoginCard users={portfolios}/>
         </>
     );
 }

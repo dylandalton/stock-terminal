@@ -1,5 +1,12 @@
 # React + TypeScript + Redux + Tailwind css + Shadcn ui 
 
+## TODO
+- [x] Create login page
+- [x] Fetch portfolios from DB
+- [x] Modify DB collection to include profile images
+- [] Create three users in DB, with profile images
+- [x] Pass user's portfolio from loginPage to HomePage after navigation (Redux)
+
 ## Setting up the project
 Check tailwind setup process for Vite React - config modification required: [tailwind css](https://tailwindcss.com/docs/guides/vite)
 ```js
@@ -23,6 +30,14 @@ npm install @radix-ui/react-slot@latest -E
 ```js
 npm install express mongoose dotenv
 npm i nodemon -D
+```
+
+## Updating MongoDB from Shell
+- Navigate to mongosh install location
+```Bash
+cd C:\Users\Dylan Dalton\AppData\Local\Programs\mongosh\
+.\mongosh.exe "mongodb+srv://dylandaltonza:LyBcBorMHAolAIeQ@cluster0.p0tkt.mongodb.net/portfolios"
+db.portfolios.updateMany({}, { $set: { avatarUrl: null } })
 ```
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

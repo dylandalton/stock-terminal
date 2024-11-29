@@ -24,7 +24,11 @@ const portfolioSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  holdings: [holdingSchema]
+  holdings: [holdingSchema],
+  avatarUrl: {
+    type: String,
+    default: null
+  }
 }, {
   timestamps: true, // createdAt, updatedAt
   indexes: [{ fields: { 'holdings.symbol': 1 }, options: { unique: true } }]

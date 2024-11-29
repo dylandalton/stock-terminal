@@ -2,6 +2,7 @@ import { PortfolioCards } from "@/components/portfolio/portfolioCards";
 import { Position } from "@/lib/types/portfolio";
 import Portfolio from '../components/portfolio/portfolio';
 import { useGetPortfoliosQuery } from "@/services/PortfoliosApi";
+import { useSelector } from "react-redux";
 
 const positions: Position[] = [
   {
@@ -31,6 +32,9 @@ const positions: Position[] = [
 ];
 
 const HomePage = () => {
+  const selectedUser = useSelector((state: any) => state.user.selectedUser);
+  console.log("SelectedUser: ", selectedUser);
+  
   return (
     <>
       <PortfolioCards positions={positions}/>

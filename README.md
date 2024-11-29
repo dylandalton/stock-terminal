@@ -1,11 +1,13 @@
-# React + TypeScript + Redux + Tailwind css + Shadcn ui 
+# React + TypeScript + Redux + Tailwind css + Shadcn ui
+# Express + MongoDB (MERN Stack)
 
 ## TODO
 - [x] Create login page
 - [x] Fetch portfolios from DB
 - [x] Modify DB collection to include profile images
-- [] Create three users in DB, with profile images
+- [x] Create three users in DB, with profile images
 - [x] Pass user's portfolio from loginPage to HomePage after navigation (Redux)
+- [] PortfolioCards & Portfolio required current prices for each holding (use AlphaVantage)
 
 ## Setting up the project
 Check tailwind setup process for Vite React - config modification required: [tailwind css](https://tailwindcss.com/docs/guides/vite)

@@ -22,7 +22,6 @@ export default function LoginCard({ users }: { users: User[] }) {
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Dashboard Login</CardTitle>
         <CardDescription>Just choose your account from the dropdown</CardDescription>
-        <h3>Testing: {users[0]?._id}</h3>
       </CardHeader>
       <CardContent>
         <Select 

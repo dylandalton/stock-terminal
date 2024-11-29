@@ -2,13 +2,22 @@ import { StatsCard } from "./statsCard";
 import { usePortfolioStats } from "@/lib/hooks/usePortfolioStats";
 import { Position } from "@/lib/types/portfolio";
 import { formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
+import { Holding } from "@/models/User";
 
-export interface PortfolioCardsProps {
-  positions: Position[];
-}
+export function PortfolioCards({ positions }: { positions: Holding[] }) {
+  const holdings = positions || [];
+  const currentPrice = 150; // Hardcoded current price
+  const totalValue = holdings.reduce((acc, holding) => acc + holding.shares * currentPrice, 0);
+  const totalIncrease = holdings.reduce((acc, holding) => acc + (holding.shares * currentPrice) - (holding.shares * holding.averagePrice), 0);
+  const percentageIncrease = (totalIncrease / totalValue) * 100;
 
-export function PortfolioCards({ positions }: PortfolioCardsProps) {
-  const { stats, isLoading } = usePortfolioStats(positions);
+  const isLoading = false; // You may need to implement loading logic here
+
+  const stats = {
+    totalValue,
+    totalIncrease,
+    percentageIncrease,
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

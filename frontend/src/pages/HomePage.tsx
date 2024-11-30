@@ -5,21 +5,18 @@ import { Holding } from "@/models/User";
 import { useGetStockCloseQuery } from "@/services/PolygonApi";
 import { AddModal } from "@/components/portfolio/AddModal";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
   const [showAddModal, setShowAddModal] = useState(false);
+  const [formData, setFormData] = useState({});
   const selectedUser = useSelector((state: any) => state.user.selectedUser);
-  console.log("SelectedUser: ", selectedUser);
 
   const holdings: Holding[] = selectedUser?.holdings;
-  console.log("Holdings: ", holdings);
 
   const queries = holdings.map((holding) => {
     return useGetStockCloseQuery(holding.symbol);
   });
-
-  console.log("Queries: ", queries);
 
   const prevCloses: number[] = [];
 
@@ -35,10 +32,24 @@ const HomePage = () => {
     }
   });
 
-  console.log("prevCloses: ", prevCloses);
+  const handleFormSubmit = (data: any) => {
+    console.log("Here is the new holding: ", data);
+    setFormData(data);
+  };
+
+  useEffect(() => {
+    console.log('Updated formData:', formData);
+  }, [formData]);
 
   return (
     <>
+      <Button 
+        className="w-full"
+        variant="login"
+        onClick={() => setShowAddModal(true)}
+      >
+        Add An Investment
+      </Button>
       <PortfolioCards positions={holdings} closes={prevCloses}/>
       {(holdings.length > 0) ? 
         <Portfolio 
@@ -56,7 +67,8 @@ const HomePage = () => {
       {showAddModal && (
         <AddModal 
           isOpen={showAddModal} 
-          onClose={() => setShowAddModal(false)} 
+          onClose={() => setShowAddModal(false)}
+          onFormSubmit={handleFormSubmit}
         />
       )}
     </>

@@ -5,9 +5,17 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 
+interface FormData {
+  symbol: string;
+  companyName: string;
+  shares: number;
+  averagePrice: number;
+}
+
 interface AddModalProps {
   isOpen: boolean
   onClose: () => void
+  onFormSubmit: (formData: FormData) => void;
 }
 
 interface FieldState {
@@ -16,7 +24,7 @@ interface FieldState {
   error: string
 }
 
-export function AddModal({ isOpen, onClose }: AddModalProps) {
+export function AddModal({ isOpen, onClose, onFormSubmit }: AddModalProps) {
   const [symbol, setSymbol] = useState<FieldState>({ value: "", touched: false, error: "" })
   const [companyName, setCompanyName] = useState<FieldState>({ value: "", touched: false, error: "" })
   const [averagePrice, setAveragePrice] = useState<FieldState>({ value: 420.50, touched: false, error: "" })
@@ -66,12 +74,19 @@ export function AddModal({ isOpen, onClose }: AddModalProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (isFormValid) {
+      const newHolding: FormData = {
+        symbol: symbol.value as string,
+        companyName: companyName.value as string,
+        averagePrice: averagePrice.value as number,
+        shares: shares.value as number,
+      }
       console.log({ 
         symbol: symbol.value, 
         companyName: companyName.value, 
         averagePrice: averagePrice.value, 
         shares: shares.value 
       })
+      onFormSubmit(newHolding);
       onClose()
     }
   }

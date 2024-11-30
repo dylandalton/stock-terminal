@@ -16,8 +16,13 @@ const userSlice = createSlice({
     setSelectedUser(state, action) {
       state.selectedUser = action.payload;
     },
+    addHolding(state, action) {
+      if (state.selectedUser) {
+        state.selectedUser.holdings.push(action.payload);
+      }
+    },
   },
 });
 
-export const { setSelectedUser } = userSlice.actions;
+export const { setSelectedUser, addHolding } = userSlice.actions;
 export default userSlice.reducer;

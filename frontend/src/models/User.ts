@@ -3,7 +3,7 @@ export interface Holding {
     companyName?: string;
     shares: number;
     averagePrice: number;
-    _id: string;
+    _id?: string;
 }
   
 export interface User {

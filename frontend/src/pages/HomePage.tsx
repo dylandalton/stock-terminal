@@ -2,44 +2,57 @@ import { PortfolioCards } from "@/components/portfolio/portfolioCards";
 import Portfolio from '../components/portfolio/portfolio';
 import { useSelector } from "react-redux";
 import { Holding } from "@/models/User";
-import { useGetStockCloseQuery } from "@/services/PolygonApi";
+import { useGetMultipleStockClosesQuery } from "@/services/PolygonApi";
 import { AddModal } from "@/components/portfolio/AddModal";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useCreateHoldingMutation } from "@/services/PortfoliosApi";
 
 const HomePage = () => {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [createHolding] = useCreateHoldingMutation();
+  
   const selectedUser = useSelector((state: any) => state.user.selectedUser);
+  const userId = selectedUser?._id;
 
   const holdings: Holding[] = selectedUser?.holdings;
-
-  const queries = holdings.map((holding) => {
-    return useGetStockCloseQuery(holding.symbol);
-  });
+  const symbols = holdings.map(holding => holding.symbol);
+  const { data, isLoading, error } = useGetMultipleStockClosesQuery(symbols);
+  
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error fetching stocks</div>;
 
   const prevCloses: number[] = [];
 
-  queries.forEach((query) => {
-    try{
-      if (query?.data) {
-        const [result] = query.data?.results;
-        const prevClose = result?.c;
+  if (data) {
+    data.forEach((stockData) => {
+      const prevClose = stockData.results[0]?.c;
+      if (prevClose !== undefined) {
         prevCloses.push(prevClose);
       }
+    });
+  }
+
+  // Convert this from Prop Drilling to making use of a Redux Slice + Mutation
+  const handleFormSubmit = async (data: any) => {
+    try {
+      const holdingData = {
+        symbol: data.symbol,
+        companyName: data.companyName,
+        shares: parseFloat(data.shares),
+        averagePrice: parseFloat(data.averagePrice)
+      };
+
+      const response = await createHolding({ 
+        userId, 
+        holdingData 
+      }).unwrap();
+
+      console.log('Holding created successfully', response);
     } catch (error) {
-      console.error("Failed to find stock symbol: ", error);
+      console.error('Failed to create holding', error);
     }
-  });
-
-  const handleFormSubmit = (data: any) => {
-    console.log("Here is the new holding: ", data);
-    setFormData(data);
   };
-
-  useEffect(() => {
-    console.log('Updated formData:', formData);
-  }, [formData]);
 
   return (
     <>

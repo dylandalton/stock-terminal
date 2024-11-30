@@ -3,8 +3,12 @@ import Portfolio from '../components/portfolio/portfolio';
 import { useSelector } from "react-redux";
 import { Holding } from "@/models/User";
 import { useGetStockCloseQuery } from "@/services/PolygonApi";
+import { AddModal } from "@/components/portfolio/AddModal";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const HomePage = () => {
+  const [showAddModal, setShowAddModal] = useState(false);
   const selectedUser = useSelector((state: any) => state.user.selectedUser);
   console.log("SelectedUser: ", selectedUser);
 
@@ -36,7 +40,25 @@ const HomePage = () => {
   return (
     <>
       <PortfolioCards positions={holdings} closes={prevCloses}/>
-      <Portfolio positions={holdings} closes={prevCloses}/>
+      {(holdings.length > 0) ? 
+        <Portfolio 
+          positions={holdings} 
+          closes={prevCloses}
+        /> : 
+        <Button 
+          className="w-full"
+          variant="login"
+          onClick={() => setShowAddModal(true)}
+        >
+          Add An Investment
+        </Button>
+      }
+      {showAddModal && (
+        <AddModal 
+          isOpen={showAddModal} 
+          onClose={() => setShowAddModal(false)} 
+        />
+      )}
     </>
   )
 }

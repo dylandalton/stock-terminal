@@ -17,11 +17,11 @@ APIs: AlphaVantage, Polygon.io
 - [x] Modify DB collection to include profile images
 - [x] Create three users in DB, with profile images
 - [x] Pass user's portfolio from loginPage to HomePage after navigation (Redux)
-- [] PortfolioCards & Portfolio components require current prices for each holding (use AlphaVantage), implement in HomePage, share as props
+- [x] PortfolioCards & Portfolio components require current prices for each holding (use AlphaVantage), implement in HomePage, share as props
 - [x] Share current price with Portfolio.tsx component for currentPrice field in table
-- [] Implement functions in Portfolio.tsx component to calculate PNL % and Profit/Loss based on user holdings data
-- [] Add logic to conditionally render an "add positions" button inside the table component if the user has no holdings
-- [] Add a "add position" button to add another holding to the user's portfolio
+- [x] Implement functions in Portfolio.tsx component to calculate PNL % and Profit/Loss based on user holdings data
+- [x] Add logic to conditionally render an "add positions" button inside the table component if the user has no holdings
+- [x] Add a "add position" button to add another holding to the user's portfolio
 - [] Add a bin icon to each holding in the portfolio table which triggers a pop up asking for deletion confirmation
 - [] Implement MongoDB holding deletion API call when the popup button is clicked.
 - [] Implement route for when a user clicks on a holding, it takes them to the stockHolding page

@@ -5,7 +5,6 @@ import { calculateProfitLoss, formatCurrency, formatPercentage } from '../../lib
 import { Holding } from "@/models/User";
 
 const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
-
   const { stats } = usePortfolioStats(positions);
 
     return (
@@ -24,7 +23,7 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
               </TableRow>
             </TableHeader>
             <TableBody>
-              {positions.map( (holding, index) => (
+              {(positions.length > 0) ? positions.map( (holding, index) => (
                 <TableRow key={holding.symbol}>
                   <TableCell className="font-medium">{holding.symbol}</TableCell>
                   <TableCell >{holding.shares}</TableCell>
@@ -49,7 +48,9 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                   })()}
 
                 </TableRow>
-              ))}
+              )) : 
+                <h2>You don't currently have any investments</h2>
+              }
             </TableBody>
             <TableFooter>
               <TableRow>

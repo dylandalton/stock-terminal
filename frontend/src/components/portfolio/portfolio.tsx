@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { usePortfolioStats } from "@/lib/hooks/usePortfolioStats";
-import { formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
+import { calculateProfitLoss, formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
 import { Holding } from "@/models/User";
 
 const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
@@ -30,10 +30,24 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                   <TableCell >{holding.shares}</TableCell>
                   <TableCell>{formatCurrency(holding.averagePrice)}</TableCell>
                   <TableCell>{formatCurrency(closes[index])}</TableCell>
-                  <TableCell>{formatCurrency(1500)}</TableCell>
-                  <TableCell className="text-right">{formatPercentage(25)}</TableCell>
-                  {/* <TableCell>{formatCurrency(holding.profitLoss)}</TableCell>   Implement function to calculate
-                  <TableCell className="text-right">{formatPercentage(holding.pnl)}</TableCell>    Implement function to calculate*/}
+
+                  {(() => {
+                    const result = calculateProfitLoss(holding.averagePrice, holding.shares, closes[index], false);
+                    return (
+                      <TableCell>
+                        {result.profitLoss !== undefined ? formatCurrency(result.profitLoss) : '-'}
+                      </TableCell>);
+                  })()}
+
+                  {(() => {
+                    const result = calculateProfitLoss(holding.averagePrice, holding.shares, closes[index], true);
+                    return (
+                      <TableCell className={`text-right px-2.5 py-0.5 rounded-full text-sm font-medium ${result.isProfit ? 'text-green-600' : 'text-red-600'}`}>
+                        {formatPercentage(result?.percentage ?? 0)}
+                      </TableCell>
+                    );
+                  })()}
+
                 </TableRow>
               ))}
             </TableBody>

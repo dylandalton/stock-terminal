@@ -31,3 +31,20 @@ export const formatCurrency = (value: number) =>
 
 export const formatPercentage = (value: number) =>
   `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;
+
+export const calculateProfitLoss = (avgPrice: number, shares: number, prevClose: number, acquirePercentage: boolean) => {
+  const comparableValue = shares * prevClose;
+  const positionValue = shares * avgPrice;
+  const totalLoss = comparableValue - positionValue;
+  const totalGain = positionValue - comparableValue;
+
+  const profitLoss = (comparableValue > positionValue) ? totalLoss : totalGain;
+  const isProfit: boolean = profitLoss >= 0;
+
+  if(acquirePercentage){
+    const percentage = (profitLoss / positionValue) * 100;
+    return { percentage, isProfit };
+  }
+
+  return { profitLoss, isProfit };
+};

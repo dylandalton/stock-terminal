@@ -4,9 +4,9 @@ import { usePortfolioStats } from "@/lib/hooks/usePortfolioStats";
 import { formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
 import { Holding } from "@/models/User";
 
-const Portfolio = ({ positions }: { positions: Holding[]}) => {
+const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
+
   const { stats } = usePortfolioStats(positions);
-  const currentPrice = 150; // Hardcoded current price
 
     return (
         <>
@@ -24,16 +24,15 @@ const Portfolio = ({ positions }: { positions: Holding[]}) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {positions.map( (holding) => (
+              {positions.map( (holding, index) => (
                 <TableRow key={holding.symbol}>
                   <TableCell className="font-medium">{holding.symbol}</TableCell>
                   <TableCell >{holding.shares}</TableCell>
                   <TableCell>{formatCurrency(holding.averagePrice)}</TableCell>
-                  <TableCell>{formatCurrency(currentPrice)}</TableCell>
+                  <TableCell>{formatCurrency(closes[index])}</TableCell>
                   <TableCell>{formatCurrency(1500)}</TableCell>
                   <TableCell className="text-right">{formatPercentage(25)}</TableCell>
-                  {/* <TableCell>{formatCurrency(holding.currentPrice)}</TableCell>   Currently hardcoded, fetch from API
-                  <TableCell>{formatCurrency(holding.profitLoss)}</TableCell>   Implement function to calculate
+                  {/* <TableCell>{formatCurrency(holding.profitLoss)}</TableCell>   Implement function to calculate
                   <TableCell className="text-right">{formatPercentage(holding.pnl)}</TableCell>    Implement function to calculate*/}
                 </TableRow>
               ))}

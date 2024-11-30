@@ -1,13 +1,11 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { CircleArrowLeft } from 'lucide-react';
 import { useGetStockQuery } from "@/services/StocksApi";
 import { Spinner } from "@/components/ui/spinner";
-import { Card } from "@/components/ui/card";
 
 const StockHolding = () => {
     const { symbol } = useParams();
-    const navigate = useNavigate();
 
     const { data, isFetching } = useGetStockQuery(symbol);
 

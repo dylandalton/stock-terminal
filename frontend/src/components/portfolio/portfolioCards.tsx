@@ -2,11 +2,11 @@ import { StatsCard } from "./statsCard";
 import { formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
 import { Holding } from "@/models/User";
 
-export function PortfolioCards({ positions }: { positions: Holding[] }) {
+export function PortfolioCards({ positions, closes }: { positions: Holding[], closes: number[] }) {
   const holdings = positions || [];
-  const currentPrice = 150; // Hardcoded current price
-  const totalValue = holdings.reduce((acc, holding) => acc + holding.shares * currentPrice, 0);
-  const totalIncrease = holdings.reduce((acc, holding) => acc + (holding.shares * currentPrice) - (holding.shares * holding.averagePrice), 0);
+  const prevCloses = closes || [];
+  const totalValue = holdings.reduce((acc, holding, index) => acc + holding.shares * prevCloses[index], 0);
+  const totalIncrease = holdings.reduce((acc, holding, index) => acc + (holding.shares * prevCloses[index]) - (holding.shares * holding.averagePrice), 0);
   const percentageIncrease = (totalIncrease / totalValue) * 100;
 
   const isLoading = false; // may need to implement loading logic here
@@ -22,15 +22,15 @@ export function PortfolioCards({ positions }: { positions: Holding[] }) {
       <StatsCard
         title="Total Portfolio Value"
         value={formatCurrency(stats.totalValue)}
-        indicator={{
-          value: formatPercentage(stats.percentageIncrease),
-          positive: stats.percentageIncrease >= 0,
-        }}
         isLoading={isLoading}
       />
       <StatsCard
         title="Total Increase"
         value={formatCurrency(stats.totalIncrease)}
+        indicator={{
+          value: formatPercentage(stats.percentageIncrease),
+          positive: stats.percentageIncrease >= 0,
+        }}
         isLoading={isLoading}
       />
     </div>

@@ -1,5 +1,15 @@
-# React + TypeScript + Redux + Tailwind css + Shadcn ui
-# Express + MongoDB (MERN Stack)
+# MERN Full Stack Web Application
+
+Stock Terminal is a stock market portfolio tracking web application built using the MERN stack.
+I was inspired by the Delta mobile application, built by etoro which is a free and robust portfolio tracker
+that I utilise on a day to day basis.
+
+Technologies used: 
+```Bash
+Frontend: React, TypeScript, Redux-Toolkit, Tailwind CSS, Shadcn ui component library
+Backend: Express js for the backend server, MongoDB for a NoSQL database
+APIs: AlphaVantage, Polygon.io
+```
 
 ## DEV ROADMAP
 - [x] Create login page

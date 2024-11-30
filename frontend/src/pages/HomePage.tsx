@@ -15,13 +15,19 @@ const HomePage = () => {
     return useGetStockCloseQuery(holding.symbol);
   });
 
+  console.log("Queries: ", queries);
+
   const prevCloses: number[] = [];
 
   queries.forEach((query) => {
-    if (query?.data) {
-      const [result] = query.data?.results;
-      const prevClose = result?.c;
-      prevCloses.push(prevClose);
+    try{
+      if (query?.data) {
+        const [result] = query.data?.results;
+        const prevClose = result?.c;
+        prevCloses.push(prevClose);
+      }
+    } catch (error) {
+      console.error("Failed to find stock symbol: ", error);
     }
   });
 
@@ -29,7 +35,7 @@ const HomePage = () => {
 
   return (
     <>
-      <PortfolioCards positions={holdings}/>
+      <PortfolioCards positions={holdings} closes={prevCloses}/>
       <Portfolio positions={holdings} closes={prevCloses}/>
     </>
   )

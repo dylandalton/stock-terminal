@@ -4,7 +4,7 @@ import { portfoliosApi } from "@/services/PortfoliosApi";
 import userReducer from './slices/userSlice';
 import { polygonApi } from "@/services/PolygonApi";
 
-export default configureStore({
+const store = configureStore({
     reducer: {
         [stocksApi.reducerPath]: stocksApi.reducer,
         [portfoliosApi.reducerPath]: portfoliosApi.reducer,
@@ -14,3 +14,8 @@ export default configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat([stocksApi.middleware, portfoliosApi.middleware, polygonApi.middleware])
 });
+
+// Export typed versions of `dispatch` and `state`
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+export default store;

@@ -4,18 +4,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
-
-interface FormData {
-  symbol: string;
-  companyName: string;
-  shares: number;
-  averagePrice: number;
-}
+import { createHoldingAsync } from "@/state/slices/userSlice"
+import { useAppDispatch } from "@/lib/hooks/hooks"
+import { Holding } from "@/models/User"
 
 interface AddModalProps {
   isOpen: boolean
   onClose: () => void
-  onFormSubmit: (formData: FormData) => void;
+  userId?: string;
 }
 
 interface FieldState {
@@ -24,7 +20,7 @@ interface FieldState {
   error: string
 }
 
-export function AddModal({ isOpen, onClose, onFormSubmit }: AddModalProps) {
+export function AddModal({ isOpen, onClose, userId }: AddModalProps) {
   const [symbol, setSymbol] = useState<FieldState>({ value: "", touched: false, error: "" })
   const [companyName, setCompanyName] = useState<FieldState>({ value: "", touched: false, error: "" })
   const [averagePrice, setAveragePrice] = useState<FieldState>({ value: 420.50, touched: false, error: "" })
@@ -32,12 +28,16 @@ export function AddModal({ isOpen, onClose, onFormSubmit }: AddModalProps) {
 
   const [isFormValid, setIsFormValid] = useState(false)
 
+  const dispatch = useAppDispatch();
+
+  const defaultFieldState: FieldState = { value: "", touched: false, error: "" };
+
   useEffect(() => {
     if (isOpen) {
-      setSymbol({ value: "", touched: false, error: "" })
-      setCompanyName({ value: "", touched: false, error: "" })
-      setAveragePrice({ value: 420.50, touched: false, error: "" })
-      setShares({ value: 150, touched: false, error: "" })
+      setSymbol(defaultFieldState);
+    setCompanyName(defaultFieldState);
+      setAveragePrice({ value: 420.50, touched: false, error: "" });
+      setShares({ value: 150, touched: false, error: "" });
     }
   }, [isOpen])
 
@@ -72,24 +72,24 @@ export function AddModal({ isOpen, onClose, onFormSubmit }: AddModalProps) {
   }, [symbol, companyName, averagePrice, shares])
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (isFormValid) {
-      const newHolding: FormData = {
-        symbol: symbol.value as string,
-        companyName: companyName.value as string,
-        averagePrice: averagePrice.value as number,
-        shares: shares.value as number,
-      }
-      console.log({ 
-        symbol: symbol.value, 
-        companyName: companyName.value, 
-        averagePrice: averagePrice.value, 
-        shares: shares.value 
-      })
-      onFormSubmit(newHolding);
-      onClose()
+    e.preventDefault();
+    if (!isFormValid) return;
+  
+    if (!userId) {
+      console.error('User ID is undefined. Cannot create holding.');
+      return;
     }
-  }
+  
+    const newHolding: Holding = {
+      symbol: symbol.value as string,
+      companyName: companyName.value as string,
+      averagePrice: parseFloat(String(averagePrice.value)),
+      shares: parseFloat(String(shares.value)),
+    };
+  
+    dispatch(createHoldingAsync({ userId, holdingData: newHolding }));
+    onClose();
+  };
 
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<FieldState>>, value: string | number) => {
     setter(prev => ({ ...prev, value, touched: true }))

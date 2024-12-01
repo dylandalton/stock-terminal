@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { createHoldingAsync } from "@/state/slices/userSlice"
-import { useAppDispatch } from "@/lib/hooks/hooks"
+import { useAppDispatch } from "@/lib/hooks/typedHooks"
 import { Holding } from "@/models/User"
 
 interface AddModalProps {

@@ -4,9 +4,8 @@ import { Holding } from "@/models/User";
 import { useGetMultipleStockClosesQuery } from "@/services/PolygonApi";
 import { AddModal } from "@/components/portfolio/AddModal";
 import { Button } from "@/components/ui/button";
-import { useAppSelector } from "@/lib/hooks/hooks";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/state/store";
+import { useAppSelector } from "@/lib/hooks/typedHooks";
+import { useDispatch } from "react-redux";
 import { closeAddHoldingModal, openAddHoldingModal } from "@/state/slices/addModalSlice";
 import DeleteModal from "@/components/portfolio/deleteModal";
 import { closeDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
@@ -14,7 +13,7 @@ import { closeDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
 const HomePage = () => {
   const dispatch = useDispatch();
   const showAddHoldingModal = useAppSelector((state) => state.addModal.showAddHoldingModal);
-  
+
   const showDeleteHoldingModal = useAppSelector((state) => state.deleteModal.showDeleteHoldingModal);
   const symbolToDelete = useAppSelector((state) => state.deleteModal.symbolToDelete);
 

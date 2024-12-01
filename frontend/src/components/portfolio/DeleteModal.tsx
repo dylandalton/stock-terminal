@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { deleteHoldingAsync } from '@/state/slices/userSlice';
-import { useAppDispatch } from '@/lib/hooks/hooks';
+import { useAppDispatch } from '@/lib/hooks/typedHooks';
 
 interface DeleteModalProps {
   isOpen: boolean;

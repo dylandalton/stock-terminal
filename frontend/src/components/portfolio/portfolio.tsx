@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { toggleAddHoldingModal } from "@/state/slices/addModalSlice";
 import { toggleDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
+import { Link } from "react-router-dom";
 
 const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
   const dispatch = useDispatch();
@@ -15,7 +16,15 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
         <>
         <Card>
           <Table>
-            <TableCaption>A list of your portfolio holdings</TableCaption>
+            {(positions.length <= 2) ?
+              <TableCaption>
+                A list of your portfolio holdings
+              </TableCaption>
+              :
+              <TableCaption>
+                Note: Please wait a minute before adding a holding or Polygon.io won't process the request
+              </TableCaption>
+            }
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[100px]">Symbol</TableHead>
@@ -30,7 +39,11 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
             <TableBody>
               {(positions.length > 0) ? positions.map( (holding, index) => (
                 <TableRow key={holding.symbol}>
-                  <TableCell className="font-medium">{holding.symbol}</TableCell>
+                  <TableCell className="font-medium cursor-pointer">
+                    <Link to={`/holdings/${holding.symbol}`}>
+                      {holding.symbol}
+                    </Link>
+                  </TableCell>
                   <TableCell >{holding.shares}</TableCell>
                   <TableCell>{formatCurrency(holding.averagePrice)}</TableCell>
                   <TableCell>{formatCurrency(closes[index])}</TableCell>

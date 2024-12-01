@@ -23,12 +23,11 @@ APIs: AlphaVantage, Polygon.io
 - [x] Add logic to conditionally render an "add positions" button inside the table component if the user has no holdings
 - [x] Add a "add position" button to add another holding to the user's portfolio
 - [x] Modify data sharing between HomePage and AddModal to make use of Redux instead of props
-- [] When adding a holding, correct Profit & Loss as well as PNL calculations
 - [x] Move add investment button to portfolio component so it appears in the table (make use of redux dispatch)
 - [] Move API & database urls to .env file, add to gitignore
 - [x] Add a bin icon to each holding in the portfolio table
 - [x] Have the bin icons trigger a pop up asking for deletion confirmation, then successfully make API request
-- [] Disable the add investment button to Impose a limit of 5 stock holdings in a portfolio (Polygon api limits to 5 calls a minute)
+- [x] Disable the add investment button to Impose a limit of 5 stock holdings in a portfolio (Polygon api limits to 5 calls a minute)
 - [] Implement route for when a user clicks on a holding, it takes them to the stockHolding page
 - [] Ensure that holding details are shared to the stockHolding page (using Redux Slices)
 - [] Implement the stockHolding page with a chart and various stock information

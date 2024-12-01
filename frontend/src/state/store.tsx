@@ -5,18 +5,27 @@ import userReducer from './slices/userSlice';
 import addModalReducer from './slices/addModalSlice';
 import deleteModalReducer from './slices/deleteModalSlice';
 import { polygonApi } from "@/services/PolygonApi";
+import { alphaVantageApi } from "@/services/AlphaVantageApi";
 
 const store = configureStore({
     reducer: {
         [stocksApi.reducerPath]: stocksApi.reducer,
         [portfoliosApi.reducerPath]: portfoliosApi.reducer,
         [polygonApi.reducerPath]: polygonApi.reducer,
+        [alphaVantageApi.reducerPath] : alphaVantageApi.reducer,
         user: userReducer,
         addModal: addModalReducer,
         deleteModal: deleteModalReducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat([stocksApi.middleware, portfoliosApi.middleware, polygonApi.middleware])
+        getDefaultMiddleware().concat(
+            [
+                stocksApi.middleware, 
+                portfoliosApi.middleware, 
+                polygonApi.middleware, 
+                alphaVantageApi.middleware
+            ]
+        )
 });
 
 // Export typed versions of `dispatch` and `state`

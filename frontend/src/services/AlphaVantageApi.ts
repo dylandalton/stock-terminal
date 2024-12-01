@@ -12,12 +12,20 @@ export const alphaVantageApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getStockHistory: builder.query({
-            query: (symbol) => `?function=TIME_SERIES_WEEKLY&symbol=${symbol}&apikey=${API_KEY}`,
+        getStockPastWeekHistory: builder.query({
+            query: (symbol) => `?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=compact&apikey=${API_KEY}`,
+        }),
+        getStockPastYearHistory: builder.query({
+            query: (symbol) => `?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=${symbol}&apikey=${API_KEY}`,
+        }),
+        getStockPastFiveYearsHistory: builder.query({
+            query: (symbol) => `?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=${symbol}&apikey=${API_KEY}`,
         })
     })
 });
 
 export const {
-    useGetStockHistoryQuery,
+    useGetStockPastWeekHistoryQuery,
+    useGetStockPastYearHistoryQuery,
+    useGetStockPastFiveYearsHistoryQuery,
 } = alphaVantageApi;

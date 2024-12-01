@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/lib/hooks/typedHooks";
 import { useDispatch } from "react-redux";
 import { closeAddHoldingModal, openAddHoldingModal } from "@/state/slices/addModalSlice";
-import DeleteModal from "@/components/portfolio/deleteModal";
+import DeleteModal from "@/components/portfolio/DeleteModal";
 import { closeDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
 
 const HomePage = () => {

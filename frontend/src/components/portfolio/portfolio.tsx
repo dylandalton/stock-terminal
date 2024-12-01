@@ -63,6 +63,7 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
               <TableRow>
                 <TableCell className="text-centre" colSpan={7}>
                   <Button 
+                    disabled={positions.length >= 5}
                     variant="login"
                     onClick={() => dispatch(toggleAddHoldingModal())}
                   >

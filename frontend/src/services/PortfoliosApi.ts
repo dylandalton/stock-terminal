@@ -16,6 +16,12 @@ export const portfoliosApi = createApi({
           method: 'POST',
           body: holdingData
         })
+      }),
+      deleteHolding: builder.mutation<any, {userId: string, symbol: string}>({
+        query: ({ userId, symbol }) => ({
+          url: `/${userId}/holdings/${symbol}`,
+          method: 'DELETE'
+        })
       })
     })
   });
@@ -23,4 +29,5 @@ export const portfoliosApi = createApi({
 export const {
     useGetPortfoliosQuery,
     useCreateHoldingMutation,
+    useDeleteHoldingMutation,
 } = portfoliosApi;

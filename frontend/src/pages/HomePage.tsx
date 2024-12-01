@@ -6,9 +6,14 @@ import { AddModal } from "@/components/portfolio/AddModal";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useAppSelector } from "@/lib/hooks/hooks";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/state/store";
+import { closeAddHoldingModal, openAddHoldingModal } from "@/state/slices/addModalSlice";
 
 const HomePage = () => {
-  const [showAddModal, setShowAddModal] = useState(false);
+  const dispatch = useDispatch();
+  const showAddHoldingModal = useSelector((state: RootState) => state.addModal.showAddHoldingModal);
+  // const [showAddModal, setShowAddModal] = useState(false);
   
   const selectedUser = useAppSelector((state) => state.user.selectedUser);
   const userId = selectedUser?._id;
@@ -25,13 +30,13 @@ const HomePage = () => {
 
   return (
     <>
-      <Button 
+      {/* <Button 
         className="w-full"
         variant="login"
         onClick={() => setShowAddModal(true)}
       >
         Add An Investment
-      </Button>
+      </Button> */}
       <PortfolioCards positions={holdings} closes={prevCloses}/>
       {(holdings.length > 0) ? 
         <Portfolio 
@@ -41,18 +46,25 @@ const HomePage = () => {
         <Button 
           className="w-full"
           variant="login"
-          onClick={() => setShowAddModal(true)}
+          onClick={() => dispatch(openAddHoldingModal())}
         >
           Add An Investment
         </Button>
       }
-      {showAddModal && (
+      {showAddHoldingModal && (
+        <AddModal 
+          isOpen={showAddHoldingModal} 
+          onClose={() => dispatch(closeAddHoldingModal())}
+          userId={userId}
+        />
+      )}
+      {/* {showAddModal && (
         <AddModal 
           isOpen={showAddModal} 
           onClose={() => setShowAddModal(false)}
           userId={userId}
         />
-      )}
+      )} */}
     </>
   )
 }

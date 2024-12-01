@@ -3,9 +3,14 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { usePortfolioStats } from "@/lib/hooks/usePortfolioStats";
 import { calculateProfitLoss, formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
 import { Holding } from "@/models/User";
+import { Trash2, CirclePlus } from 'lucide-react';
+import { Button } from "../ui/button";
+import { useDispatch } from "react-redux";
+import { toggleAddHoldingModal } from "@/state/slices/addModalSlice";
 
 const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
   const { stats } = usePortfolioStats(positions);
+  const dispatch = useDispatch();
 
     return (
         <>
@@ -19,7 +24,8 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                 <TableHead>Average Price</TableHead>
                 <TableHead>Current Price</TableHead>
                 <TableHead>Total Profit/Loss</TableHead>
-                <TableHead className="text-right">PNL %</TableHead>
+                <TableHead>PNL %</TableHead>
+                <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -46,7 +52,9 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                       </TableCell>
                     );
                   })()}
-
+                  <TableCell>
+                      <Trash2 className="text-red-500 hover:text-red-600 cursor-pointer" onClick={() => console.log("Testinnng")} />
+                  </TableCell>
                 </TableRow>
               )) : 
                 <h2>You don't currently have any investments</h2>
@@ -54,8 +62,15 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TableCell className="text-left" colSpan={5}>Total Value</TableCell>
-                <TableCell className="text-right">{formatCurrency(stats.totalValue)}</TableCell>
+                <TableCell className="text-centre" colSpan={7}>
+                  <Button 
+                    variant="login"
+                    onClick={() => dispatch(toggleAddHoldingModal())}
+                  >
+                    <CirclePlus />
+                    Add an Investment
+                  </Button>
+                </TableCell>
               </TableRow>
             </TableFooter>
           </Table>

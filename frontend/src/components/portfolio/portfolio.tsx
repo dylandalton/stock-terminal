@@ -1,15 +1,14 @@
 import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { usePortfolioStats } from "@/lib/hooks/usePortfolioStats";
 import { calculateProfitLoss, formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
 import { Holding } from "@/models/User";
 import { Trash2, CirclePlus } from 'lucide-react';
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { toggleAddHoldingModal } from "@/state/slices/addModalSlice";
+import { toggleDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
 
 const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
-  const { stats } = usePortfolioStats(positions);
   const dispatch = useDispatch();
 
     return (
@@ -53,7 +52,7 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                     );
                   })()}
                   <TableCell>
-                      <Trash2 className="text-red-500 hover:text-red-600 cursor-pointer" onClick={() => console.log("Testinnng")} />
+                      <Trash2 className="text-red-500 hover:text-red-600 cursor-pointer" onClick={() => dispatch(toggleDeleteHoldingModal(holding.symbol))} />
                   </TableCell>
                 </TableRow>
               )) : 

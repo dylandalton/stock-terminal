@@ -35,7 +35,7 @@ export function AddModal({ isOpen, onClose, userId }: AddModalProps) {
   useEffect(() => {
     if (isOpen) {
       setSymbol(defaultFieldState);
-    setCompanyName(defaultFieldState);
+      setCompanyName(defaultFieldState);
       setAveragePrice({ value: 420.50, touched: false, error: "" });
       setShares({ value: 150, touched: false, error: "" });
     }

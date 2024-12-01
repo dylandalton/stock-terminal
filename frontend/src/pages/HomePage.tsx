@@ -4,17 +4,20 @@ import { Holding } from "@/models/User";
 import { useGetMultipleStockClosesQuery } from "@/services/PolygonApi";
 import { AddModal } from "@/components/portfolio/AddModal";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { useAppSelector } from "@/lib/hooks/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { closeAddHoldingModal, openAddHoldingModal } from "@/state/slices/addModalSlice";
+import DeleteModal from "@/components/portfolio/deleteModal";
+import { closeDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const showAddHoldingModal = useSelector((state: RootState) => state.addModal.showAddHoldingModal);
-  // const [showAddModal, setShowAddModal] = useState(false);
+  const showAddHoldingModal = useAppSelector((state) => state.addModal.showAddHoldingModal);
   
+  const showDeleteHoldingModal = useAppSelector((state) => state.deleteModal.showDeleteHoldingModal);
+  const symbolToDelete = useAppSelector((state) => state.deleteModal.symbolToDelete);
+
   const selectedUser = useAppSelector((state) => state.user.selectedUser);
   const userId = selectedUser?._id;
 
@@ -30,13 +33,6 @@ const HomePage = () => {
 
   return (
     <>
-      {/* <Button 
-        className="w-full"
-        variant="login"
-        onClick={() => setShowAddModal(true)}
-      >
-        Add An Investment
-      </Button> */}
       <PortfolioCards positions={holdings} closes={prevCloses}/>
       {(holdings.length > 0) ? 
         <Portfolio 
@@ -58,13 +54,14 @@ const HomePage = () => {
           userId={userId}
         />
       )}
-      {/* {showAddModal && (
-        <AddModal 
-          isOpen={showAddModal} 
-          onClose={() => setShowAddModal(false)}
+      {showDeleteHoldingModal && (
+        <DeleteModal 
           userId={userId}
+          symbol={symbolToDelete}
+          isOpen={showDeleteHoldingModal} 
+          onRemove={() => dispatch(closeDeleteHoldingModal())} 
         />
-      )} */}
+      )}
     </>
   )
 }

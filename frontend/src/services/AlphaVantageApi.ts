@@ -13,7 +13,7 @@ export const alphaVantageApi = createApi({
     }),
     endpoints: (builder) => ({
         getStockPastWeekHistory: builder.query({
-            query: (symbol) => `?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=compact&apikey=${API_KEY}`,
+            query: (symbol) => `?function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=full&apikey=${API_KEY}`,
         }),
         getStockPastYearHistory: builder.query({
             query: (symbol) => `?function=TIME_SERIES_WEEKLY_ADJUSTED&symbol=${symbol}&apikey=${API_KEY}`,

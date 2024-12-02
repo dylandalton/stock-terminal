@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { toggleAddHoldingModal } from "@/state/slices/addModalSlice";
 import { toggleDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
 import { Link } from "react-router-dom";
+import { setCurrentHolding } from "@/state/slices/currentHoldingSlice";
 
 const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
   const dispatch = useDispatch();
@@ -40,7 +41,13 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
               {(positions.length > 0) ? positions.map( (holding, index) => (
                 <TableRow key={holding.symbol}>
                   <TableCell className="font-medium cursor-pointer">
-                    <Link to={`/holdings/${holding.symbol}`}>
+                    <Link 
+                      to={`/holdings/${holding.symbol}`}
+                      onClick={() => dispatch(setCurrentHolding({
+                        symbol: holding.symbol,
+                        companyName: holding.companyName
+                      }))}
+                    >
                       {holding.symbol}
                     </Link>
                   </TableCell>

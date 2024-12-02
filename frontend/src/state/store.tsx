@@ -4,6 +4,7 @@ import { portfoliosApi } from "@/services/PortfoliosApi";
 import userReducer from './slices/userSlice';
 import addModalReducer from './slices/addModalSlice';
 import deleteModalReducer from './slices/deleteModalSlice';
+import currentHoldingReducer from './slices/currentHoldingSlice';
 import { polygonApi } from "@/services/PolygonApi";
 import { alphaVantageApi } from "@/services/AlphaVantageApi";
 
@@ -16,6 +17,7 @@ const store = configureStore({
         user: userReducer,
         addModal: addModalReducer,
         deleteModal: deleteModalReducer,
+        currentHolding: currentHoldingReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(

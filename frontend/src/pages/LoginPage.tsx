@@ -21,7 +21,6 @@ const LoginPage = () => {
     );
 
     const portfolios: User[] = data?.data;
-    console.log("Fetched from MongoDB: ", portfolios);
 
     return (
         <>

@@ -1,37 +1,47 @@
-import { useParams } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { CircleArrowLeft } from 'lucide-react';
-import { useGetStockQuery } from "@/services/StocksApi";
-import { Spinner } from "@/components/ui/spinner";
+import { useAppSelector } from "@/lib/hooks/typedHooks";
+import StockChart from '@/components/stockHolding/StockChart';
+import { useGetStockPastWeekHistoryQuery } from '@/services/AlphaVantageApi';
+import { useDispatch } from 'react-redux';
+import { clearCurrentHolding } from '@/state/slices/currentHoldingSlice';
 
 const StockHolding = () => {
-    const { symbol } = useParams();
+    const dispatch = useDispatch();
+    const currentHolding = useAppSelector((state) => state.currentHolding);
 
-    const { data, isFetching } = useGetStockQuery(symbol);
+    const { data, isLoading } = useGetStockPastWeekHistoryQuery(currentHolding.symbol);
 
-    if (isFetching) return (
-        <div className="min-h-screen bg-background p-8 flex items-center justify-center">
-            <button type="button" className="flex items-center rounded-lg bg-black px-4 py-2 text-white" disabled>
-                <div className="flex items-center justify-center gap-8 mr-2">
-                    <div className="flex flex-col items-center gap-2">
-                        <Spinner size="md" variant="white"/>
-                    </div>
-                </div>
-                <span className="font-medium"> Processing... </span>
-            </button>
-        </div>
+    if(isLoading){
+        return <p>Loading...</p>
+    }
+    // Stopped working as I hit the daily rate limit on AlphaVantage
+    console.log("here's data: ", data);
+    const pastWeekPrices = Object.fromEntries(
+        Object.entries(data?.['Time Series (Daily)']).slice(0, 7)
+    );
+    const pastWeekCloses = Object.fromEntries(
+        Object.entries(pastWeekPrices).map(([date, priceData]) => [
+            date,
+            parseFloat((priceData as any)['4. close']).toFixed(2),
+        ])
     );
 
-    const stockHolding = data?.["Global Quote"];
-    console.log(stockHolding);
+    console.log("AlphaV Modded: ", pastWeekCloses);
 
     return (
         <>
+            {/* <StockChart 
+                symbol={currentHolding.symbol}
+                companyName={currentHolding.companyName}
+                initialPrices={}
+            /> */}
             <section>
                 <div className="container m-auto py-6 px-6">
                     <Link
                     to="/home"
                     className="text-indigo-500 hover:text-indigo-600 flex items-center"
+                    onClick={() => dispatch(clearCurrentHolding())}
                     >
                     <CircleArrowLeft className="mr-2" /> Back to Portfolio Dashboard
                     </Link>

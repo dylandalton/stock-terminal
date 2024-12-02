@@ -1,4 +1,4 @@
-import { PastWeekCloses, StockPriceApiResponse } from "@/models/AlphaVantage.model";
+import { PastWeekCloses, StockPriceApiResponse } from "@/models/alphaVantage/AlphaVantage.model";
 
 // export const getPastWeekCloses = (data: StockPriceApiResponse) => {
 //     const pastWeekPrices = Object.fromEntries(

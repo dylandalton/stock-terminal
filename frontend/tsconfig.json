@@ -9,6 +9,7 @@
     }
   ],
   "compilerOptions": {
+    "types": ["msw"],
     "baseUrl": ".",
     "jsx": "react-jsx",
     "paths": {

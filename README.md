@@ -24,10 +24,11 @@ APIs: AlphaVantage, Polygon.io
 - [x] Add a "add position" button to add another holding to the user's portfolio
 - [x] Modify data sharing between HomePage and AddModal to make use of Redux instead of props
 - [x] Move add investment button to portfolio component so it appears in the table (make use of redux dispatch)
-- [] Move API & database urls to .env file, add to gitignore
+- [x] Move API & database urls to .env file, add to gitignore
 - [x] Add a bin icon to each holding in the portfolio table
 - [x] Have the bin icons trigger a pop up asking for deletion confirmation, then successfully make API request
 - [x] Disable the add investment button to Impose a limit of 5 stock holdings in a portfolio (Polygon api limits to 5 calls a minute)
+- [x] Implement local stubbed data to avoid API request limits
 - [] Implement route for when a user clicks on a holding, it takes them to the stockHolding page
 - [] Ensure that holding details are shared to the stockHolding page (using Redux Slices)
 - [] Implement the stockHolding page with a chart and various stock information
@@ -68,6 +69,13 @@ npm i nodemon -D
 cd C:\Users\Dylan Dalton\AppData\Local\Programs\mongosh\
 .\mongosh.exe "mongodb+srv://dylandaltonza:LyBcBorMHAolAIeQ@cluster0.p0tkt.mongodb.net/portfolios"
 db.portfolios.updateMany({}, { $set: { avatarUrl: null } })
+```
+
+## Setting up envrionments
+```Bash
+npm install dotenv
+npm install msw --save-dev
+npm install cross-env --save-dev
 ```
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

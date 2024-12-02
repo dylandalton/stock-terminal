@@ -11,7 +11,7 @@ import { User } from "@/models/User"
 export default function LoginCard({ users }: { users: User[] }) {
   const [localSelectedUser, setLocalSelectedUser] = useState<User | null>(null);
   const dispatch = useDispatch();
-
+  // console.log("USers from stubs: ", users);
   const handleLogin = (selectedUser: User) => {
     dispatch(setSelectedUser(selectedUser));
   };

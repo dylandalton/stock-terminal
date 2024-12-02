@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const API_KEY = "BF2XCK1EUJPI72EZ";
+const API_KEY = import.meta.env.VITE_ALPHAV_API_KEY || "BF2XCK1EUJPI72EZ";
+const baseUrl = import.meta.env.VITE_ALPHAV_API_URL || 'https://www.alphavantage.co/query';
 
 export const alphaVantageApi = createApi({
     reducerPath: 'alphaVantage',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://www.alphavantage.co/query',
+        baseUrl: baseUrl,
         prepareHeaders: (headers) => {
             headers.set('User-Agent', 'request');
             return headers;

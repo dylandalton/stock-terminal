@@ -12,3 +12,12 @@ export interface User {
     avatarUrl?: string;
     holdings: Holding[];
 }
+
+export interface UserData {
+    success: boolean;
+    data: User[];
+}
+
+export interface PortfoliosResponse {
+    res: UserData;
+}

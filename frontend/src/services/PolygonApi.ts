@@ -8,12 +8,14 @@ interface StockData {
   }
 
 // const API_KEY = "pbsFzS6jJgC2X0VjMOyZ_yjI6c922wAH";  - Old API Key
-const API_KEY = "5lAECx83pQ7Wk2AQ1WT_QWWqUWxpEa_V";
+// const API_KEY = "5lAECx83pQ7Wk2AQ1WT_QWWqUWxpEa_V";
+const API_KEY = import.meta.env.VITE_POLYGON_API_KEY || '';
+const baseUrl = import.meta.env.VITE_POLYGON_API_URL || '';
 
 export const polygonApi = createApi({
     reducerPath: 'polygon',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://api.polygon.io/v2',
+        baseUrl: baseUrl,
     }),
     endpoints: (builder) => ({
         getStockClose: builder.query({

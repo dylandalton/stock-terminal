@@ -29,14 +29,13 @@ APIs: AlphaVantage, Polygon.io
 - [x] Have the bin icons trigger a pop up asking for deletion confirmation, then successfully make API request
 - [x] Disable the add investment button to Impose a limit of 5 stock holdings in a portfolio (Polygon api limits to 5 calls a minute)
 - [x] Implement local stubbed data to avoid API request limits
-- [] Implement route for when a user clicks on a holding, it takes them to the stockHolding page
-- [] Ensure that holding details are shared to the stockHolding page (using Redux Slices)
-- [] Implement the stockHolding page with a chart and various stock information
+- [x] Implement route for when a user clicks on a holding, it takes them to the stockHolding page
+- [x] Ensure that holding details are shared to the stockHolding page (using Redux Slices)
+- [x] Implement the stockHolding page with a chart and various stock information
+- [] Implement a bar chart, showing the user's portfolio weightings in descending order
 - [] Add buy & sell functionality to allow the user to update their holding information for that stock (update API call to MongoDB)
 - [] Still to be decided, but when buy/sell button is clicked, trigger popup with a slider allowing them to select how many shares to buy/sell
-- [] Ensure than once a user has navigated to homepage, userSelected remains selected in LoginPage
-- [] Ensure that once a user navigates to the homepage, portfolio holdings data remains there even if they leave the page
-- [] Setup a chart component to track the user's portfolio performance over time
+- [x] Ensure that once a user navigates to the homepage, portfolio holdings data remains there even if they leave the page
 
 ## Setting up the project
 Check tailwind setup process for Vite React - config modification required: [tailwind css](https://tailwindcss.com/docs/guides/vite)

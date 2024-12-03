@@ -9,16 +9,14 @@ import { clearCurrentHolding } from '@/state/slices/currentHoldingSlice';
 const StockHolding = () => {
     const dispatch = useDispatch();
     const currentHolding = useAppSelector((state) => state.currentHolding);
-
     const { data, isLoading } = useGetStockPastWeekHistoryQuery(currentHolding.symbol);
 
     if(isLoading){
         return <p>Loading...</p>
     }
-    // Stopped working as I hit the daily rate limit on AlphaVantage
-    console.log("here's data: ", data);
+
     const pastWeekPrices = Object.fromEntries(
-        Object.entries(data?.['Time Series (Daily)']).slice(0, 7)
+        Object.entries(data?.['Time Series (Daily)'] ?? {}).slice(0, 7)
     );
     const pastWeekCloses = Object.fromEntries(
         Object.entries(pastWeekPrices).map(([date, priceData]) => [
@@ -31,11 +29,11 @@ const StockHolding = () => {
 
     return (
         <>
-            {/* <StockChart 
+            <StockChart 
                 symbol={currentHolding.symbol}
                 companyName={currentHolding.companyName}
-                initialPrices={}
-            /> */}
+                initialPrices={pastWeekCloses}
+            />
             <section>
                 <div className="container m-auto py-6 px-6">
                     <Link

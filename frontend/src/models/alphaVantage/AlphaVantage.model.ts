@@ -28,12 +28,12 @@ export interface PastWeekCloses {
 // Past Year & Past 5 Years API Calls
 interface AlphaVantageMetaData {
   "1. Information": string;
-  "2. Symbol": string;
+  "2. Symbol": string | null;
   "3. Last Refreshed": string;
   "4. Time Zone": string;
 }
 
-interface StockPriceData {
+export interface StockPriceData {
   "1. open": string;
   "2. high": string;
   "3. low": string;

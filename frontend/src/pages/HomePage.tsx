@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { closeAddHoldingModal, openAddHoldingModal } from "@/state/slices/addModalSlice";
 import DeleteModal from "@/components/portfolio/DeleteModal";
 import { closeDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
+import ToggleableChart from "@/components/portfolio/ToggleableChart";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const HomePage = () => {
   return (
     <>
       <PortfolioCards positions={holdings} closes={prevCloses}/>
+      <ToggleableChart holdings={holdings}/>
       {(holdings.length > 0) ? 
         <Portfolio 
           positions={holdings} 

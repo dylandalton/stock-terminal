@@ -52,5 +52,6 @@ export const polygonApi = createApi({
 
 export const {
     useGetStockCloseQuery,
-    useGetMultipleStockClosesQuery
+    useGetMultipleStockClosesQuery,
+    useGetStockFinancialsQuery
 } = polygonApi;

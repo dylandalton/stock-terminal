@@ -96,6 +96,6 @@ interface StockFinancial {
     financials: Financials;
 }
 
-interface StockFinancialsResponse {
+export interface StockFinancialsResponse {
     results: StockFinancial[];
 }

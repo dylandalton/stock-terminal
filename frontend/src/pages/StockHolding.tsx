@@ -6,15 +6,23 @@ import { useGetStockPastWeekHistoryQuery } from '@/services/AlphaVantageApi';
 import { useDispatch } from 'react-redux';
 import { clearCurrentHolding } from '@/state/slices/currentHoldingSlice';
 import KeyStatsCard from '@/components/KeyStatsCard';
+import { useGetStockFinancialsQuery } from '@/services/PolygonApi';
+import { Financials, StockFinancialsResponse } from '@/models/Polygon.model';
 
 const StockHolding = () => {
     const dispatch = useDispatch();
     const currentHolding = useAppSelector((state) => state.currentHolding);
     const { data, isLoading } = useGetStockPastWeekHistoryQuery(currentHolding.symbol);
+    const { data: financialData, isLoading: isFetching }: {
+        data?: StockFinancialsResponse | undefined, 
+        isLoading: boolean 
+    } = useGetStockFinancialsQuery(currentHolding.symbol);
 
-    if(isLoading){
+    if(isLoading || isFetching){
         return <p>Loading...</p>
     }
+
+    const financials: Financials | undefined = financialData?.results[0]?.financials;
 
     const pastWeekPrices = Object.fromEntries(
         Object.entries(data?.['Time Series (Daily)'] ?? {}).slice(0, 7)
@@ -25,8 +33,6 @@ const StockHolding = () => {
             parseFloat((priceData as any)['4. close']).toFixed(2),
         ])
     );
-
-    console.log("AlphaV Modded: ", pastWeekCloses);
 
     return (
         <>
@@ -46,7 +52,7 @@ const StockHolding = () => {
                     </Link>
                 </div>
             </section>
-            {/* <KeyStatsCard financials={}/> */}
+            {financials && <KeyStatsCard financials={financials} />}
         </>
     );
 }

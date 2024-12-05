@@ -5,6 +5,7 @@ import StockChart from '@/components/stockHolding/StockChart';
 import { useGetStockPastWeekHistoryQuery } from '@/services/AlphaVantageApi';
 import { useDispatch } from 'react-redux';
 import { clearCurrentHolding } from '@/state/slices/currentHoldingSlice';
+import KeyStatsCard from '@/components/KeyStatsCard';
 
 const StockHolding = () => {
     const dispatch = useDispatch();
@@ -45,6 +46,7 @@ const StockHolding = () => {
                     </Link>
                 </div>
             </section>
+            {/* <KeyStatsCard financials={}/> */}
         </>
     );
 }

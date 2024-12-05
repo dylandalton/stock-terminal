@@ -8,6 +8,7 @@ import { clearCurrentHolding } from '@/state/slices/currentHoldingSlice';
 import KeyStatsCard from '@/components/KeyStatsCard';
 import { useGetStockFinancialsQuery } from '@/services/PolygonApi';
 import { Financials, StockFinancialsResponse } from '@/models/Polygon.model';
+import { Spinner } from '@/components/ui/spinner';
 
 const StockHolding = () => {
     const dispatch = useDispatch();
@@ -19,7 +20,11 @@ const StockHolding = () => {
     } = useGetStockFinancialsQuery(currentHolding.symbol);
 
     if(isLoading || isFetching){
-        return <p>Loading...</p>
+        return (
+            <div className="h-[88px] flex items-center justify-center">
+                <Spinner size="xl" />
+            </div>
+        )
     }
 
     const financials: Financials | undefined = financialData?.results[0]?.financials;
@@ -36,23 +41,25 @@ const StockHolding = () => {
 
     return (
         <>
-            <StockChart 
-                symbol={currentHolding.symbol}
-                companyName={currentHolding.companyName}
-                initialPrices={pastWeekCloses}
-            />
+            <div className='my-5'>
+                <StockChart 
+                    symbol={currentHolding.symbol}
+                    companyName={currentHolding.companyName}
+                    initialPrices={pastWeekCloses}
+                />
+            </div>
+            {financials && <KeyStatsCard financials={financials} />}
             <section>
                 <div className="container m-auto py-6 px-6">
                     <Link
                     to="/home"
-                    className="text-indigo-500 hover:text-indigo-600 flex items-center"
+                    className="text-black hover:text-indigo-600 flex items-center"
                     onClick={() => dispatch(clearCurrentHolding())}
                     >
                     <CircleArrowLeft className="mr-2" /> Back to Portfolio Dashboard
                     </Link>
                 </div>
             </section>
-            {financials && <KeyStatsCard financials={financials} />}
         </>
     );
 }

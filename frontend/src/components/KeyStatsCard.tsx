@@ -41,9 +41,9 @@ export default function KeyStatsCard({financials}: KeyStatsProps) {
           <StatItem title="Gross Profit" value={grossProfit} />
           <StatItem title="Net Income" value={netIncomeLoss} />
           <StatItem title="Operating Income" value={operatingIncome} />
-          <StatItem title="Earnings Per Share" value={earningsPerShare} />
-          <StatItem title="Shares Outstanding" value={sharesOutstanding} />
           <StatItem title="Revenues" value={revenues} />
+          <StatItem title="Shares Outstanding" value={sharesOutstanding} />
+          <StatItem title="Earnings Per Share" value={earningsPerShare} />
           <StatItem title="Liabilities" value={liabilities} />
           <StatItem title="Assets" value={assets} />
         </div>

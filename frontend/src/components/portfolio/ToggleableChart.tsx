@@ -65,7 +65,7 @@ export default function ToggleableChart({ holdings }: ToggleableChartProps) {
   const toggleChart = () => setIsPieChart(!isPieChart)
 
   return (
-    <Card className="w-full max-w-3xl">
+    <Card className="w-full my-5">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Holdings Chart</CardTitle>
         <Button variant="outline" size="icon" onClick={toggleChart}>

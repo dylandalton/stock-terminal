@@ -10,6 +10,7 @@ interface StockChartProps {
   symbol: string
   companyName: string | undefined
   initialPrices: { [key: string]: string }
+  className?: string;
 }
 
 interface ChartData {
@@ -20,7 +21,7 @@ interface ChartData {
 const timeRanges = ['1W', '1Y', '5Y'] as const
 type TimeRange = typeof timeRanges[number]
 
-export default function StockChart({ symbol, companyName, initialPrices }: StockChartProps) {
+export default function StockChart({ symbol, companyName, initialPrices, className }: StockChartProps) {
   const currentHolding = useAppSelector((state) => state.currentHolding);
   // Convert initialPrices to an array of ChartData for useState
   const [prices, setPrices] = useState<ChartData[]>(Object.entries(initialPrices).map(([date, price]) => ({
@@ -120,12 +121,12 @@ export default function StockChart({ symbol, companyName, initialPrices }: Stock
     <Card className="w-full max-w-4xl">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div>
-          <CardTitle className="text-3xl font-bold">{symbol}</CardTitle>
-          <p className="text-xl text-muted-foreground">{companyName}</p>
+          <CardTitle className="text-3xl ml-5 font-bold">{symbol}</CardTitle>
+          <p className="text-xl ml-9 text-muted-foreground">{companyName}</p>
         </div>
         <Card className={`p-4 ${priceChange >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
           <CardTitle className={`text-2xl ${priceChange >= 0 ? 'text-green-700' : 'text-red-700'}`}>
-            {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}
+            {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
           </CardTitle>
         </Card>
       </CardHeader>

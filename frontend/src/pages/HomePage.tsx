@@ -12,6 +12,7 @@ import { closeDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
 import ToggleableChart from "@/components/portfolio/ToggleableChart";
 import { closeModifyHoldingModal } from "@/state/slices/modifyModalSlice";
 import { ModifyModal } from "@/components/portfolio/ModifyModal";
+import { Spinner } from "@/components/ui/spinner";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,11 @@ const HomePage = () => {
 
   const { data, isLoading, error } = useGetMultipleStockClosesQuery(symbols);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return (
+    <div className="h-[88px] flex items-center justify-center">
+      <Spinner size="xl" />
+    </div>
+  );
   if (error) return <div>Error fetching stocks</div>;
 
   const prevCloses = data?.map((stockData) => stockData.results[0]?.c ?? 0) ?? [];

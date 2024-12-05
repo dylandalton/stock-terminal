@@ -7,8 +7,6 @@ interface StockData {
     }>;
   }
 
-// const API_KEY = "pbsFzS6jJgC2X0VjMOyZ_yjI6c922wAH";  - Old API Key
-// const API_KEY = "5lAECx83pQ7Wk2AQ1WT_QWWqUWxpEa_V";
 const API_KEY = import.meta.env.VITE_POLYGON_API_KEY || '';
 const baseUrl = import.meta.env.VITE_POLYGON_API_URL || '';
 
@@ -45,6 +43,9 @@ export const polygonApi = createApi({
                     };
                 }
             }
+        }),
+        getStockFinancials: builder.query({
+            query: (symbol) => `/vX/reference/financials?ticker=${symbol}&timeframe=annual&limit=20&apiKey=${API_KEY}`,
         })
     })
 });

@@ -1,7 +1,7 @@
 // src/mocks/handlers.js
 import { mockNewHoldingResponse, mockPortfolios } from '@/stubs/stubPortfolios';
 import { http, HttpResponse } from 'msw'
-import { mockMultipleStockClosesResponse } from '@/stubs/stubPolygonApi';
+import { mockMultipleStockClosesResponse, mockStockFinancialsResponse } from '@/stubs/stubPolygonApi';
 import { mockDailyPriceCloses } from '@/stubs/alphaVantage/stubDailyPriceCloses';
 import { AlphaVantageDailyResponse, DailyData } from '@/models/alphaVantage/AlphaVDaily.model';
 import { mockPastYearHistoryResponse } from '@/stubs/alphaVantage/stubWeeklyPriceCloses';
@@ -162,5 +162,13 @@ export const handlers = [
 
     return HttpResponse.json(fullResponse);
   }),
+
+  // handler for Polygon API stock financials GET request
+  http.get(`${PolygonBaseUrl}/vX/reference/financials?ticker=:symbol`, ({ params }) =>{
+    const symbol = params.symbol;
+    console.log('MSW Intercepted Polygon Stock Financials Request', { symbol });
+    
+    return HttpResponse.json(mockStockFinancialsResponse);
+  })
 
 ];

@@ -24,6 +24,13 @@ export const portfoliosApi = createApi({
           url: `/${userId}/holdings/${symbol}`,
           method: 'DELETE'
         })
+      }),
+      updateHolding: builder.mutation<any, {userId: string, holdingId: string, holdingData: Holding}>({
+        query: ({userId, holdingId, holdingData}) => ({
+          url: `/${userId}/holdings/${holdingId}`,
+          method: 'PUT',
+          body: holdingData
+        })
       })
     })
   });
@@ -32,4 +39,5 @@ export const {
     useGetPortfoliosQuery,
     useCreateHoldingMutation,
     useDeleteHoldingMutation,
+    useUpdateHoldingMutation
 } = portfoliosApi;

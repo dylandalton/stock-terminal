@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react"
-import { Bar, BarChart, Pie, PieChart, Cell, ResponsiveContainer, TooltipProps, XAxis } from "recharts"
+import { Bar, BarChart, Pie, PieChart, Cell, TooltipProps, XAxis } from "recharts"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PieChartIcon as ChartPie, BarChartHorizontalBig } from 'lucide-react'
@@ -7,8 +7,7 @@ import {
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
+  ChartTooltip
 } from "@/components/ui/chart"
 import { Holding } from "@/models/User"
 import { formatCurrency } from '../../lib/utils/portfolioCalculations';

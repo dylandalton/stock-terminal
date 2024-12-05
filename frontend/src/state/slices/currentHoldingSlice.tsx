@@ -7,7 +7,7 @@ interface CurrentHoldingState {
   
   const initialState: CurrentHoldingState = {
     symbol: '',
-    companyName: ''
+    companyName: '',
   };
 
 const currentHoldingSlice = createSlice({

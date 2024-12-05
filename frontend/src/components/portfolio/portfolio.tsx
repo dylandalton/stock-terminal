@@ -2,13 +2,14 @@ import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { calculateProfitLoss, formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
 import { Holding } from "@/models/User";
-import { Trash2, CirclePlus } from 'lucide-react';
+import { Trash2, CirclePlus, ListPlus } from 'lucide-react';
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { toggleAddHoldingModal } from "@/state/slices/addModalSlice";
 import { toggleDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
 import { Link } from "react-router-dom";
 import { setCurrentHolding } from "@/state/slices/currentHoldingSlice";
+import { toggleModifyHoldingModal } from "@/state/slices/modifyModalSlice";
 
 const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
   const dispatch = useDispatch();
@@ -34,11 +35,12 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                 <TableHead>Current Price</TableHead>
                 <TableHead>Total Profit/Loss</TableHead>
                 <TableHead>PNL %</TableHead>
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead>Buy/Sell</TableHead>
+                <TableHead className="text-right">Remove</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(positions.length > 0) ? positions.map( (holding, index) => (
+              {(positions.length > 0) ? positions.map( (holding: Holding, index) => (
                 <TableRow key={holding.symbol}>
                   <TableCell className="font-medium cursor-pointer">
                     <Link 
@@ -71,8 +73,11 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                       </TableCell>
                     );
                   })()}
+                  <TableCell className="flex justify-center items-center">
+                    <ListPlus className="text-black-500 hover:text-indigo-500 cursor-pointer" onClick={() => dispatch(toggleModifyHoldingModal(holding))}/>
+                  </TableCell>
                   <TableCell>
-                      <Trash2 className="text-red-500 hover:text-red-600 cursor-pointer" onClick={() => dispatch(toggleDeleteHoldingModal(holding.symbol))} />
+                    <Trash2 className="text-red-500 hover:text-red-600 cursor-pointer" onClick={() => dispatch(toggleDeleteHoldingModal(holding.symbol))} />
                   </TableCell>
                 </TableRow>
               )) : 
@@ -81,7 +86,7 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TableCell className="text-centre" colSpan={7}>
+                <TableCell className="text-centre" colSpan={8}>
                   <Button 
                     disabled={positions.length >= 5}
                     variant="login"

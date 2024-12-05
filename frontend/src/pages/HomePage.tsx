@@ -10,6 +10,8 @@ import { closeAddHoldingModal, openAddHoldingModal } from "@/state/slices/addMod
 import DeleteModal from "@/components/portfolio/DeleteModal";
 import { closeDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
 import ToggleableChart from "@/components/portfolio/ToggleableChart";
+import { closeModifyHoldingModal } from "@/state/slices/modifyModalSlice";
+import { ModifyModal } from "@/components/portfolio/ModifyModal";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,9 @@ const HomePage = () => {
 
   const showDeleteHoldingModal = useAppSelector((state) => state.deleteModal.showDeleteHoldingModal);
   const symbolToDelete = useAppSelector((state) => state.deleteModal.symbolToDelete);
+
+  const showModifyHoldingModal = useAppSelector((state) => state.modifyModal.showModifyHoldingModal);
+  const holdingToUpdate = useAppSelector((state) => state.modifyModal.holdingData);
 
   const selectedUser = useAppSelector((state) => state.user.selectedUser);
   const userId = selectedUser?._id;
@@ -61,6 +66,14 @@ const HomePage = () => {
           symbol={symbolToDelete}
           isOpen={showDeleteHoldingModal} 
           onRemove={() => dispatch(closeDeleteHoldingModal())} 
+        />
+      )}
+      {showModifyHoldingModal && (
+        <ModifyModal
+          userId={userId}
+          holding={holdingToUpdate}
+          isOpen={showModifyHoldingModal} 
+          onClose={() => dispatch(closeModifyHoldingModal())}
         />
       )}
     </>

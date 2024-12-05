@@ -5,6 +5,7 @@ import userReducer from './slices/userSlice';
 import addModalReducer from './slices/addModalSlice';
 import deleteModalReducer from './slices/deleteModalSlice';
 import currentHoldingReducer from './slices/currentHoldingSlice';
+import modifyModalReducer from './slices/modifyModalSlice';
 import { polygonApi } from "@/services/PolygonApi";
 import { alphaVantageApi } from "@/services/AlphaVantageApi";
 
@@ -17,6 +18,7 @@ const store = configureStore({
         user: userReducer,
         addModal: addModalReducer,
         deleteModal: deleteModalReducer,
+        modifyModal: modifyModalReducer,
         currentHolding: currentHoldingReducer
     },
     middleware: (getDefaultMiddleware) =>

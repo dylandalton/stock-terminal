@@ -34,10 +34,12 @@ APIs: AlphaVantage, Polygon.io
 - [x] Implement the stockHolding page with a chart and various stock information
 - [x] Implement a bar chart, showing the user's portfolio weightings in descending order
 - [x] Allow the bar chart to be toggled to a pie chart
-- [] Add buy & sell functionality to allow the user to update their holding information for that stock (update API call to MongoDB)
-- [] Still to be decided, but when buy/sell button is clicked, trigger popup with a slider allowing them to select how many shares to buy/sell
+- [x] Add buy & sell functionality to allow the user to update their holding information for that stock (update API call to MongoDB)
+- [x] when buy/sell button is clicked, trigger popup with a slider allowing them to select how many shares to buy/sell
 - [x] Ensure that once a user navigates to the homepage, portfolio holdings data remains there even if they leave the page
 - [] Modify stock holding page to also include various bits of information about said stock (market cap ect..)
+- [] If possible, implement a news tab, on stockHolding page beneath it's key facts
+- [] Implement spinners instead of static loading text across application
 
 ## Setting up the project
 Check tailwind setup process for Vite React - config modification required: [tailwind css](https://tailwindcss.com/docs/guides/vite)

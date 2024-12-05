@@ -10,16 +10,20 @@ interface UserState {
   } | null;
   isAddingHolding: boolean;
   isDeletingHolding: boolean;
+  isUpdatingHolding: boolean;
   addHoldingError: string | null;
   deleteHoldingError: string | null;
+  updateHoldingError: string | null;
 }
 
 const initialState: UserState = {
   selectedUser: null,
   isAddingHolding: false,
   isDeletingHolding: false,
+  isUpdatingHolding: false,
   addHoldingError: null,
   deleteHoldingError: null,
+  updateHoldingError: null
 };
 
 // Async thunk with proper typing
@@ -56,6 +60,24 @@ export const deleteHoldingAsync = createAsyncThunk<
         portfoliosApi.endpoints.deleteHolding.initiate({ userId, symbol })
       ).unwrap();
       return { response, symbol }
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const updateHoldingAsync = createAsyncThunk<
+  { holdingData: Holding; response: any; },
+  { userId: string; holdingId: string; holdingData: Holding},
+  { dispatch: AppDispatch; state: RootState }
+>(
+  'user/updateHolding',
+  async({userId, holdingId, holdingData}, {dispatch, rejectWithValue}) => {
+    try{
+      const response = await dispatch(
+        portfoliosApi.endpoints.updateHolding.initiate({userId, holdingId, holdingData})
+      ).unwrap();
+      return { holdingData, response};
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -101,7 +123,24 @@ const userSlice = createSlice({
       .addCase(deleteHoldingAsync.rejected, (state, action) => {
         state.isDeletingHolding = false;
         state.deleteHoldingError = action.payload as string;
-      });
+      })
+      .addCase(updateHoldingAsync.pending, (state) => {
+        state.isUpdatingHolding = true;
+        state.updateHoldingError = null;
+      })
+      .addCase(updateHoldingAsync.fulfilled, (state, action) => {
+        state.isUpdatingHolding = false;
+        if (state.selectedUser) {
+          const updatedHoldings = state.selectedUser.holdings.map((holding) =>
+            holding._id === action.payload.holdingData._id ? action.payload.holdingData : holding
+          );
+          state.selectedUser.holdings = updatedHoldings;
+        }
+      })
+      .addCase(updateHoldingAsync.rejected, (state, action) => {
+        state.isUpdatingHolding = false;
+        state.updateHoldingError = action.payload as string;
+      })
   },
 });
 

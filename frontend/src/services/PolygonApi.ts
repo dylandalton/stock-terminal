@@ -46,6 +46,9 @@ export const polygonApi = createApi({
         }),
         getStockFinancials: builder.query({
             query: (symbol) => `/vX/reference/financials?ticker=${symbol}&timeframe=annual&limit=20&apiKey=${API_KEY}`,
+        }),
+        getStockNews: builder.query({
+            query: (symbol) => `/v2/reference/news?ticker=${symbol}&order=desc&limit=10&apiKey=${API_KEY}`,
         })
     })
 });
@@ -53,5 +56,6 @@ export const polygonApi = createApi({
 export const {
     useGetStockCloseQuery,
     useGetMultipleStockClosesQuery,
-    useGetStockFinancialsQuery
+    useGetStockFinancialsQuery,
+    useGetStockNewsQuery,
 } = polygonApi;

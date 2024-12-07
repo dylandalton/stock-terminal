@@ -6,27 +6,34 @@ import { useGetStockPastWeekHistoryQuery } from '@/services/AlphaVantageApi';
 import { useDispatch } from 'react-redux';
 import { clearCurrentHolding } from '@/state/slices/currentHoldingSlice';
 import KeyStatsCard from '@/components/KeyStatsCard';
-import { useGetStockFinancialsQuery } from '@/services/PolygonApi';
-import { Financials, StockFinancialsResponse } from '@/models/Polygon.model';
+import { useGetStockFinancialsQuery, useGetStockNewsQuery } from '@/services/PolygonApi';
+import { Financials, StockFinancialsResponse, StockNewsResponse } from '@/models/Polygon.model';
 import { Spinner } from '@/components/ui/spinner';
 
 const StockHolding = () => {
     const dispatch = useDispatch();
     const currentHolding = useAppSelector((state) => state.currentHolding);
     const { data, isLoading } = useGetStockPastWeekHistoryQuery(currentHolding.symbol);
+
+    const {data: newsData, isLoading: newsLoading}: {
+        data?: StockNewsResponse | undefined,
+        isLoading: boolean
+    } = useGetStockNewsQuery(currentHolding.symbol);
+
     const { data: financialData, isLoading: isFetching }: {
         data?: StockFinancialsResponse | undefined, 
         isLoading: boolean 
     } = useGetStockFinancialsQuery(currentHolding.symbol);
 
-    if(isLoading || isFetching){
+    if(isLoading || isFetching || newsLoading){
         return (
             <div className="h-[88px] flex items-center justify-center">
                 <Spinner size="xl" />
             </div>
         )
     }
-
+    const stockNews = newsData?.results[0]?.article_url;
+    
     const financials: Financials | undefined = financialData?.results[0]?.financials;
 
     const pastWeekPrices = Object.fromEntries(

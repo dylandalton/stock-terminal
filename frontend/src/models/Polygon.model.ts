@@ -99,3 +99,38 @@ interface StockFinancial {
 export interface StockFinancialsResponse {
     results: StockFinancial[];
 }
+
+interface Publisher {
+    name: string;
+    homepage_url: string;
+    logo_url: string;
+    favicon_url: string;
+  }
+  
+  interface Insight {
+    ticker: string;
+    sentiment: 'positive' | 'negative' | 'neutral';
+    sentiment_reasoning: string;
+  }
+  
+  interface StockNewsItem {
+    id: string;
+    publisher: Publisher;
+    title: string;
+    author: string;
+    published_utc: string;
+    article_url: string;
+    tickers: string[];
+    image_url: string;
+    description: string;
+    keywords: string[];
+    insights: Insight[];
+  }
+  
+  export interface StockNewsResponse {
+    results: StockNewsItem[];
+    status: string;
+    request_id: string;
+    count: number;
+    next_url?: string;
+  }

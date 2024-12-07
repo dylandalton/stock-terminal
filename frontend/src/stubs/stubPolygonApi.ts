@@ -1,4 +1,4 @@
-import { StockData } from '@/models/Polygon.model';
+import { StockData, StockNewsResponse } from '@/models/Polygon.model';
 
 export const mockMultipleStockClosesResponse: StockData[] = [
   {
@@ -209,4 +209,117 @@ export const mockStockFinancialsResponse = {
       }
     },
   ]
+}
+
+export const mockStockNewsResponse: StockNewsResponse = {
+  "results":
+  [
+    {
+      "id":"3bb0e0d887d5dfcb2080ec6fb96866e279657bac742e158fb7207292bccee4c2",
+      "publisher":{
+        "name":"GlobeNewswire Inc.",
+        "homepage_url":"https://www.globenewswire.com",
+        "logo_url":"https://s3.polygon.io/public/assets/news/logos/globenewswire.svg",
+        "favicon_url":"https://s3.polygon.io/public/assets/news/favicons/globenewswire.ico"
+      },
+      "title":"Data Center Virtualization Market to Reach USD 28.9 Billion by 2032, Driven by the Growing Need for Scalable, Cost-Effective Infrastructure Solutions | Research by SNS Insider",
+      "author":"Sns Insider",
+      "published_utc":"2024-12-06T14:00:00Z",
+      "article_url":"https://www.globenewswire.com/news-release/2024/12/06/2993074/0/en/Data-Center-Virtualization-Market-to-Reach-USD-28-9-Billion-by-2032-Driven-by-the-Growing-Need-for-Scalable-Cost-Effective-Infrastructure-Solutions-Research-by-SNS-Insider.html",
+      "tickers":
+      [
+        "MSFT",
+        "CSCO",
+        "IBM",
+        "AMZN",
+        "ORCL",
+        "HPE",
+        "HPEpC",
+        "DELL",
+        "NTNX",
+        "GOOG",
+        "GOOGL",
+        "BABA",
+        "JNPR",
+        "AVGO"
+      ],
+      "image_url":"https://ml.globenewswire.com/Resource/Download/d6272c2e-d204-41b8-b545-a6e2e24f85c2",
+      "description":"The data center virtualization market is experiencing significant growth due to the increasing need for businesses to scale operations efficiently while minimizing costs. The demand for flexible, cost-effective IT infrastructure solutions is driving businesses toward virtualization technologies.",
+      "keywords":
+      [
+        "data center virtualization",
+        "cloud computing",
+        "IT infrastructure",
+        "virtualization technology",
+        "digital transformation"
+      ],
+      "insights":
+      [
+        {
+          "ticker":"MSFT",
+          "sentiment":"positive",
+          "sentiment_reasoning":"Microsoft's Hyper-V is also highlighted as a leading data center virtualization solution, indicating the company's strong presence in this market."
+        },
+        {
+          "ticker":"CSCO",
+          "sentiment":"positive",
+          "sentiment_reasoning":"Cisco's Nexus 9000 Series is mentioned as a key data center virtualization offering, showcasing the company's involvement in this growing market."
+        },
+        {
+          "ticker":"IBM",
+          "sentiment":"positive",
+          "sentiment_reasoning":"IBM's Cloud Virtual Servers are highlighted as a prominent data center virtualization solution, suggesting the company's active participation in this space."
+        },
+        {
+          "ticker":"AMZN",
+          "sentiment":"positive",
+          "sentiment_reasoning":"AWS's Amazon EC2 is mentioned as a leading data center virtualization platform, indicating the company's strong presence in the market."
+        },
+        {
+          "ticker":"ORCL",
+          "sentiment":"positive",
+          "sentiment_reasoning":"Oracle's VM solution is included in the list of major data center virtualization offerings, demonstrating the company's involvement in this market."
+        },
+        {
+          "ticker":"HPE",
+          "sentiment":"positive",
+          "sentiment_reasoning":"HPE's OneView is highlighted as a key data center virtualization product, suggesting the company's active participation in this growing market."
+        },
+        {
+          "ticker":"HPEpC",
+          "sentiment":"positive",
+          "sentiment_reasoning":"HPE's OneView is highlighted as a key data center virtualization product, suggesting the company's active participation in this growing market."
+        },
+        {
+          "ticker":"DELL",
+          "sentiment":"positive",
+          "sentiment_reasoning":"Dell's VMware Cloud on Dell EMC is mentioned as a prominent data center virtualization solution, indicating the company's strong presence in this market."
+        },
+        {
+          "ticker":"NTNX",
+          "sentiment":"positive",
+          "sentiment_reasoning":"Nutanix's AHV is included in the list of major data center virtualization solutions, showcasing the company's involvement in this growing market."
+        },
+        {
+          "ticker":"GOOG",
+          "sentiment":"positive",
+          "sentiment_reasoning":"Google Cloud's VMware Engine is mentioned as a key data center virtualization platform, suggesting the company's active participation in this market."
+        },
+        {
+          "ticker":"GOOGL",
+          "sentiment":"positive",
+          "sentiment_reasoning":"Google Cloud's VMware Engine is mentioned as a key data center virtualization platform, suggesting the company's active participation in this market."
+        },
+        {
+          "ticker":"BABA",
+          "sentiment":"positive",
+          "sentiment_reasoning":"Alibaba Cloud's Elastic Compute Service (ECS) is highlighted as a prominent data center virtualization offering, indicating the company's strong presence in this market."
+        },
+      ]
+    }
+  ],
+  "status":"OK",
+  "request_id":"3e99e7cb28d19fb32fd2b8d6ed9c88e3",
+  "count":1,
+  "next_url":"https://api.polygon.io/v2/reference/news?cursor=YXA9MjAyNC0xMi0wNlQxNCUzQTAwJTNBMDBaJmFzPTNiYjBlMGQ4ODdkNWRmY2IyMDgwZWM2ZmI5Njg2NmUyNzk2NTdiYWM3NDJlMTU4ZmI3MjA3MjkyYmNjZWU0YzImbGltaXQ9MSZvcmRlcj1kZXNjZW5kaW5nJnRpY2tlcj1NU0ZU"
 }

@@ -8,7 +8,8 @@ import {
     getHolding,
     createHolding,
     updateHolding,
-    deleteHolding
+    deleteHolding,
+    getScrape
 } from '../controllers/portfolio.controller.js';
 
 const router = express.Router();
@@ -24,5 +25,8 @@ router.get('/:id/holdings/:symbol', getHolding);
 router.post('/:id/holdings', createHolding);
 router.put('/:id/holdings/:symbol', updateHolding);
 router.delete('/:id/holdings/:symbol', deleteHolding);
+
+// Web Scraping endpoint
+router.post('/scrape', getScrape);
 
 export default router;

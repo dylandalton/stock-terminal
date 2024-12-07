@@ -38,6 +38,7 @@ APIs: AlphaVantage, Polygon.io
 - [x] when buy/sell button is clicked, trigger popup with a slider allowing them to select how many shares to buy/sell
 - [x] Ensure that once a user navigates to the homepage, portfolio holdings data remains there even if they leave the page
 - [x] Modify stock holding page to also include various bits of information about said stock (market cap ect..)
+- [] Implement news section in StockHolding page using Web Scraping
 - [] ensure symbol and company name fields are read only when user clicks buy/sell button 
 - [] If possible, implement a news tab, on stockHolding page beneath it's key facts
 - [x] Implement spinners instead of static loading text across application

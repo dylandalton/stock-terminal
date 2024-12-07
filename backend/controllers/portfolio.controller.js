@@ -1,6 +1,8 @@
 import Portfolio from "../models/portfolio.model.js";
 import mongoose from "mongoose";
 import { validatePortfolio, validateHolding } from "../utils/portfolioValidation.util.js";
+import puppeteer from 'puppeteer';
+import cheerio from 'cheerio';
 
 export const getPortfolios = async (req, res) => {
     try{
@@ -163,3 +165,26 @@ export const deleteHolding = async (req, res) => {
     res.status(error.status || 500).json({ success: false, message: error.message || 'Internal Server Error' });
   }
 };
+
+export const getScrape = async (req, res) => {
+  const { articleUrl } = req.body;
+    if (!articleUrl) {
+      return res.status(400).json({ error: 'Article URL is required' });
+    }
+  
+    try {
+      const browser = await puppeteer.launch({ headless: "new" });
+      const page = await browser.newPage();
+      await page.goto(articleUrl, { waitUntil: 'networkidle0' });
+      
+      const content = await page.content();
+      const $ = cheerio.load(content);
+      await browser.close();
+  
+      const articleText = $('body').text().trim();
+      res.json({ articleContent: articleText });
+    } catch (error) {
+      console.error('Error scraping article:', error);
+      res.status(500).json({ error: 'Failed to scrape content' });
+    }
+}

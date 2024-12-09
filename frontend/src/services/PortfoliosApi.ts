@@ -31,7 +31,10 @@ export const portfoliosApi = createApi({
           method: 'PUT',
           body: holdingData
         })
-      })
+      }),
+      getScrape: builder.query({
+        query: (articleurl) => `/scrape/${articleurl}`
+      }),
     })
   });
 
@@ -39,5 +42,6 @@ export const {
     useGetPortfoliosQuery,
     useCreateHoldingMutation,
     useDeleteHoldingMutation,
-    useUpdateHoldingMutation
+    useUpdateHoldingMutation,
+    useGetScrapeQuery
 } = portfoliosApi;

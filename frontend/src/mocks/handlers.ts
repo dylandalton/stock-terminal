@@ -11,6 +11,7 @@ import { StockHistoryResponse, StockPriceData } from '@/models/alphaVantage/Alph
 const AlphaVantageBaseUrl = import.meta.env.VITE_ALPHAV_API_URL;
 const PortfoliosBaseUrl = import.meta.env.VITE_PORTFOLIOS_API_URL;
 const PolygonBaseUrl = import.meta.env.VITE_POLYGON_API_URL;
+const ScrapeBaseUrl = import.meta.env.VITE_SCRAPE_API_URL;
 
 export const handlers = [
   // handler for getPortfolios - MongoDB
@@ -68,6 +69,16 @@ export const handlers = [
     };
 
     return HttpResponse.json(mockResponse);
+  }),
+
+  // handler for portfolios API GET scrape request
+  http.get(`${ScrapeBaseUrl}/scrape/*`, ({request}) => {
+    const url = new URL(request.url)
+    const articleurl = url.href;
+
+    console.log('MSW intercepted Portfolios Scrape Request: ', articleurl);
+
+    return HttpResponse.json('Mocked scraped article content');
   }),
 
   // handler for all three AlphaVantage endpoints
@@ -179,6 +190,6 @@ export const handlers = [
     console.log('MSW Intercepted Polygon Stock News Request', { symbol });
 
     return HttpResponse.json(mockStockNewsResponse);
-  })
-
+  }),
+  // https://www.globenewswire.com/news-release/2024/12/06/2993074/0/en/Data-Center-Virtualization-Market-to-Reach-USD-28-9-Billion-by-2032-Driven-by-the-Growing-Need-for-Scalable-Cost-Effective-Infrastructure-Solutions-Research-by-SNS-Insider.html
 ];

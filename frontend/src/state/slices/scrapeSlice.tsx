@@ -2,8 +2,14 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { portfoliosApi } from '@/services/PortfoliosApi';
 import { AppDispatch, RootState } from '../store';
 
+export interface ArticleScrapeResponse{
+    title: string;
+    author: string;
+    articleText: string;
+}
+
 interface ScrapeState {
-  scrapedArticle: string | null;
+  scrapedArticle: ArticleScrapeResponse | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -15,17 +21,20 @@ const initialState: ScrapeState = {
 };
 
 export const getScrapeAsync = createAsyncThunk<
-  { scrapedContent: string; }, // Return type
+ArticleScrapeResponse, // Return type
   { articleUrl: string }, // Argument type
   { dispatch: AppDispatch; state: RootState } // Thunk config
 >(
   'scrape/getScrape',
   async ({ articleUrl }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await dispatch(
+      const response: ArticleScrapeResponse = await dispatch(
         portfoliosApi.endpoints.getScrape.initiate(articleUrl)
       ).unwrap();
-      return { scrapedContent: response };
+
+      const scrapedArticle: ArticleScrapeResponse = response;
+
+      return scrapedArticle;
     } catch (error) {
       return rejectWithValue('Failed to scrape article');
     }
@@ -43,19 +52,20 @@ const scrapeSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getScrapeAsync.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(getScrapeAsync.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.scrapedArticle = action.payload.scrapedContent;
-      })
-      .addCase(getScrapeAsync.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload as string || 'Failed to scrape article';
-        state.scrapedArticle = null;
-      });
+    .addCase(getScrapeAsync.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.scrapedArticle = null; // Clear previous article
+    })
+    .addCase(getScrapeAsync.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.scrapedArticle = action.payload; // Directly assign
+    })
+    .addCase(getScrapeAsync.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload as string || 'Failed to scrape article';
+      state.scrapedArticle = null;
+    });
   },
 });
 

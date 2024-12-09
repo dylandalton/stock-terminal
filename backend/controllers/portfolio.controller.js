@@ -168,23 +168,55 @@ export const deleteHolding = async (req, res) => {
 
 export const getScrape = async (req, res) => {
   const { articleUrl } = req.body;
-    if (!articleUrl) {
-      return res.status(400).json({ error: 'Article URL is required' });
-    }
+
+  if (!articleUrl) {
+    return res.status(400).json({ error: 'Article URL is required' });
+  }
+
+  try {
+    const browser = await puppeteer.launch({ headless: "new" });
+    const page = await browser.newPage();
+    await page.goto(articleUrl, { waitUntil: 'networkidle0' });
+
+    const content = await page.content();
+    const $ = cheerio.load(content);
+
+    const title = $('title').text().trim();
+    const author = $('meta[name="author"]').attr('content') || ''; // Adjust selector as needed
+    const articleText = $('article').text().trim(); // Adjust selector as needed
+
+    await browser.close();
+
+    res.json({
+      title,
+      author,
+      articleText,
+    });
+  } catch (error) {
+    console.error('Error scraping article:', error);
+    res.status(500).json({ error: 'Failed to scrape content' });
+  }
+};
+
+// export const getScrape = async (req, res) => {
+//   const { articleUrl } = req.body;
+//     if (!articleUrl) {
+//       return res.status(400).json({ error: 'Article URL is required' });
+//     }
   
-    try {
-      const browser = await puppeteer.launch({ headless: "new" });
-      const page = await browser.newPage();
-      await page.goto(articleUrl, { waitUntil: 'networkidle0' });
+//     try {
+//       const browser = await puppeteer.launch({ headless: "new" });
+//       const page = await browser.newPage();
+//       await page.goto(articleUrl, { waitUntil: 'networkidle0' });
       
-      const content = await page.content();
-      const $ = cheerio.load(content);
-      await browser.close();
+//       const content = await page.content();
+//       const $ = cheerio.load(content);
+//       await browser.close();
   
-      const articleText = $('body').text().trim();
-      res.json({ articleContent: articleText });
-    } catch (error) {
-      console.error('Error scraping article:', error);
-      res.status(500).json({ error: 'Failed to scrape content' });
-    }
-}
+//       const articleText = $('body').text().trim();
+//       res.json({ articleContent: articleText });
+//     } catch (error) {
+//       console.error('Error scraping article:', error);
+//       res.status(500).json({ error: 'Failed to scrape content' });
+//     }
+// }

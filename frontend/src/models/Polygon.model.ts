@@ -134,9 +134,3 @@ interface Publisher {
     count: number;
     next_url?: string;
   }
-
-  export interface ArticleProps {
-    title: string;
-    author: string;
-    article_url: string;
-  }

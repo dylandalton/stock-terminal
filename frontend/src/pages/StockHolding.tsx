@@ -7,17 +7,15 @@ import { useDispatch } from 'react-redux';
 import { clearCurrentHolding } from '@/state/slices/currentHoldingSlice';
 import KeyStatsCard from '@/components/KeyStatsCard';
 import { useGetStockFinancialsQuery, useGetStockNewsQuery } from '@/services/PolygonApi';
-import { ArticleProps, Financials, StockFinancialsResponse, StockNewsResponse } from '@/models/Polygon.model';
-import { Spinner } from '@/components/ui/spinner';
-import { useGetScrapeQuery } from '@/services/PortfoliosApi';import CompanyNewsCard from '@/components/stockHolding/company-news-card';
-import { useEffect } from 'react';
+import { Financials, StockFinancialsResponse, StockNewsResponse } from '@/models/Polygon.model';
+import { Spinner } from '@/components/ui/spinner';import { useEffect } from 'react';
 import { getScrapeAsync } from '@/state/slices/scrapeSlice';
 
 const StockHolding = () => {
     const dispatch = useDispatch();
     const appDispatch = useAppDispatch();
     const currentHolding = useAppSelector((state) => state.currentHolding);
-    const scrapedArticle = useAppSelector((state) => state.scrape.scrapedArticle); // make use of somehow
+    const scrapedArticle = useAppSelector((state) => state.scrape.scrapedArticle); // return scraped Article state
 
     const { data, isLoading } = useGetStockPastWeekHistoryQuery(currentHolding.symbol);
 
@@ -34,7 +32,6 @@ const StockHolding = () => {
     useEffect(() => {
         if (newsData?.results[0]?.article_url) {
             appDispatch(getScrapeAsync({ articleUrl: newsData.results[0].article_url }));
-            console.log("Completed Call: ", newsData?.results[0]?.article_url);
         }
       }, [newsData]);
 
@@ -44,21 +41,6 @@ const StockHolding = () => {
                 <Spinner size="xl" />
             </div>
         )
-    }
-    
-    let formattedArticles: ArticleProps[] = [];
-
-    if (!newsLoading && newsData?.results[0]) {
-        for (let i = 0; i < 3 && i < newsData.results.length; i++) {
-            const result = newsData.results[i];
-            const articleProps: ArticleProps = {
-                title: result.title,
-                author: result.author,
-                article_url: result.article_url
-            };
-            formattedArticles.push(articleProps);
-        }
-        console.log("Formatted: ", formattedArticles);
     }
     
     const financials: Financials | undefined = financialData?.results[0]?.financials;

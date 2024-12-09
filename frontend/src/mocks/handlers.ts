@@ -7,6 +7,7 @@ import { AlphaVantageDailyResponse, DailyData } from '@/models/alphaVantage/Alph
 import { mockPastYearHistoryResponse } from '@/stubs/alphaVantage/stubWeeklyPriceCloses';
 import { mockPastFiveYearsHistoryResponse } from '@/stubs/alphaVantage/stubMonthlyPriceCloses';
 import { StockHistoryResponse, StockPriceData } from '@/models/alphaVantage/AlphaVantage.model';
+import { ArticleScrapeResponse } from '@/state/slices/scrapeSlice';
 
 const AlphaVantageBaseUrl = import.meta.env.VITE_ALPHAV_API_URL;
 const PortfoliosBaseUrl = import.meta.env.VITE_PORTFOLIOS_API_URL;
@@ -78,7 +79,13 @@ export const handlers = [
 
     console.log('MSW intercepted Portfolios Scrape Request: ', articleurl);
 
-    return HttpResponse.json('Mocked scraped article content');
+    const mockArticle: ArticleScrapeResponse = {
+      title: "Mock Article Title",
+      author: "Mock Author",
+      articleText: "This is a mock article description. I am going to fill this article with a bunch of text to see what it will look like inside of the shadcn card component.",
+    };
+  
+    return HttpResponse.json(mockArticle);
   }),
 
   // handler for all three AlphaVantage endpoints

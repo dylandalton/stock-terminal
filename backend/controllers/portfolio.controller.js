@@ -191,6 +191,7 @@ export const getScrape = async (req, res) => {
       title,
       author,
       articleText,
+      articleUrl
     });
   } catch (error) {
     console.error('Error scraping article:', error);

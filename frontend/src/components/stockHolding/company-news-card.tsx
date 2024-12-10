@@ -6,7 +6,7 @@ import { useAppSelector } from "@/lib/hooks/typedHooks"
 export default function CompanyNewsCard() {
   const scrapedArticles = useAppSelector((state) => state.scrape.scrapedArticles);
   return (
-    <Card className="w-full max-w-3xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Latest Company News</CardTitle>
       </CardHeader>

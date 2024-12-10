@@ -83,6 +83,7 @@ export const handlers = [
       title: "Mock Article Title",
       author: "Mock Author",
       articleText: "This is a mock article description. I am going to fill this article with a bunch of text to see what it will look like inside of the shadcn card component.",
+      article_url: "https://www.investing.com/news/stock-market-news/google-invests-in-intersect-power-in-over-800-million-funding-round-amid-ai-race-3763989"
     };
   
     return HttpResponse.json(mockArticle);

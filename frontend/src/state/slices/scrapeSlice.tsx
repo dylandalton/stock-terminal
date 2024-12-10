@@ -6,6 +6,7 @@ export interface ArticleScrapeResponse{
     title: string;
     author: string;
     articleText: string;
+    article_url?: string;
 }
 
 interface ScrapeState {

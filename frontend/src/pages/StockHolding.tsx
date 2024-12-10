@@ -10,12 +10,13 @@ import { useGetStockFinancialsQuery, useGetStockNewsQuery } from '@/services/Pol
 import { Financials, StockFinancialsResponse, StockNewsResponse } from '@/models/Polygon.model';
 import { Spinner } from '@/components/ui/spinner';import { useEffect } from 'react';
 import { getScrapeAsync } from '@/state/slices/scrapeSlice';
+import CompanyNewsCard from '@/components/stockHolding/company-news-card';
 
 const StockHolding = () => {
     const dispatch = useDispatch();
     const appDispatch = useAppDispatch();
     const currentHolding = useAppSelector((state) => state.currentHolding);
-    const scrapedArticles = useAppSelector((state) => state.scrape.scrapedArticles); // return scraped Article state
+    const scrapedArticles = useAppSelector((state) => state.scrape.scrapedArticles);
 
     const { data, isLoading } = useGetStockPastWeekHistoryQuery(currentHolding.symbol);
 
@@ -41,9 +42,6 @@ const StockHolding = () => {
             });
           }
         }
-        if (scrapedArticles.length === 3) {
-            console.log("Scraped articles:", scrapedArticles);
-          }
       }, [newsData, appDispatch, scrapedArticles.length]);
 
     if(isLoading || isFetching || newsLoading){
@@ -76,7 +74,7 @@ const StockHolding = () => {
                 />
             </div>
             {financials && <KeyStatsCard financials={financials} />}
-            {/* {scrapedArticles && <CompanyNewsCard articles={articles}/>} */}
+            {scrapedArticles && <CompanyNewsCard />}
             <section>
                 <div className="container m-auto py-6 px-6">
                     <Link

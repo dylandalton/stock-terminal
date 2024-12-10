@@ -1,12 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ArticleScrapeResponse } from "@/state/slices/scrapeSlice"
 
-interface NewsArticleCardProps {
-  title: string
-  author: string
-  article: string
-}
-
-export default function NewsArticleCard({ title, author, article }: NewsArticleCardProps) {
+export default function NewsArticleCard({ title, author, articleText }: ArticleScrapeResponse) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -14,7 +9,7 @@ export default function NewsArticleCard({ title, author, article }: NewsArticleC
         <p className="text-sm text-muted-foreground">By {author}</p>
       </CardHeader>
       <CardContent>
-        <p className="text-sm">{article}</p>
+        <p className="text-sm">{articleText}</p>
       </CardContent>
     </Card>
   )

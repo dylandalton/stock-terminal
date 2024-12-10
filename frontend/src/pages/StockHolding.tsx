@@ -15,7 +15,7 @@ const StockHolding = () => {
     const dispatch = useDispatch();
     const appDispatch = useAppDispatch();
     const currentHolding = useAppSelector((state) => state.currentHolding);
-    const scrapedArticle = useAppSelector((state) => state.scrape.scrapedArticle); // return scraped Article state
+    const scrapedArticles = useAppSelector((state) => state.scrape.scrapedArticles); // return scraped Article state
 
     const { data, isLoading } = useGetStockPastWeekHistoryQuery(currentHolding.symbol);
 
@@ -30,10 +30,21 @@ const StockHolding = () => {
     } = useGetStockFinancialsQuery(currentHolding.symbol);
 
     useEffect(() => {
-        if (newsData?.results[0]?.article_url) {
-            appDispatch(getScrapeAsync({ articleUrl: newsData.results[0].article_url }));
+        if (newsData?.results?.length) {
+          const remainingCapacity = 3 - scrapedArticles.length;
+      
+          if (remainingCapacity > 0) {
+            newsData.results.slice(0, remainingCapacity).forEach((item) => {
+              if (item.article_url) {
+                appDispatch(getScrapeAsync({ articleUrl: item.article_url }));
+              }
+            });
+          }
         }
-      }, [newsData]);
+        if (scrapedArticles.length === 3) {
+            console.log("Scraped articles:", scrapedArticles);
+          }
+      }, [newsData, appDispatch, scrapedArticles.length]);
 
     if(isLoading || isFetching || newsLoading){
         return (
@@ -65,7 +76,7 @@ const StockHolding = () => {
                 />
             </div>
             {financials && <KeyStatsCard financials={financials} />}
-            {/* {scrapedArticle && <CompanyNewsCard articles={articles}/>} */}
+            {/* {scrapedArticles && <CompanyNewsCard articles={articles}/>} */}
             <section>
                 <div className="container m-auto py-6 px-6">
                     <Link

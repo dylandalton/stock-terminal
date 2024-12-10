@@ -9,13 +9,13 @@ export interface ArticleScrapeResponse{
 }
 
 interface ScrapeState {
-  scrapedArticle: ArticleScrapeResponse | null;
+  scrapedArticles: ArticleScrapeResponse[];
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: ScrapeState = {
-  scrapedArticle: null,
+  scrapedArticles: [],
   isLoading: false,
   error: null
 };
@@ -46,7 +46,7 @@ const scrapeSlice = createSlice({
   initialState,
   reducers: {
     clearScrapedArticle(state) {
-      state.scrapedArticle = null;
+      state.scrapedArticles = [];
       state.error = null;
     }
   },
@@ -55,16 +55,14 @@ const scrapeSlice = createSlice({
     .addCase(getScrapeAsync.pending, (state) => {
       state.isLoading = true;
       state.error = null;
-      state.scrapedArticle = null; // Clear previous article
     })
     .addCase(getScrapeAsync.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.scrapedArticle = action.payload; // Directly assign
+      state.scrapedArticles.push(action.payload);
     })
     .addCase(getScrapeAsync.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string || 'Failed to scrape article';
-      state.scrapedArticle = null;
     });
   },
 });

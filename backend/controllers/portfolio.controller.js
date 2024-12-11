@@ -292,3 +292,51 @@ export const getScrape = async (articleUrl) => {
 
   await browser.close();
 };
+
+export const scrapeArticles = async (symbol) => {
+  const url = `https://www.cnbc.com/quotes/${symbol}`;
+
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.goto(url, { 
+    waitUntil: 'networkidle0',
+    timeout: 50000 
+  });
+
+  const allArticles = await page.evaluate(() => {
+    const articles = document.querySelectorAll('.LatestNews-item');
+    return Array.from(articles).slice(0, 3).map((article) => {
+      const container = article.querySelector('.LatestNews-container');
+      const headline = container.querySelector('.LatestNews-headlineWrapper');
+      const aTag = headline.querySelector('a');
+      const title = aTag ? aTag.title : 'No Title Available';
+      const url = aTag ? aTag.href : 'No Url Available';
+
+      // Querying for the author inside the nested spans
+      const sourceSpan = headline.querySelector('span');
+      const innerSpan = sourceSpan.querySelector('span');
+      
+      let author = '';
+      if (innerSpan) {
+        // Get the computed style for ::before
+        const beforeStyle = window.getComputedStyle(innerSpan, '::before');
+        const beforeContent = beforeStyle.content;
+
+        // Extract text content, removing quotes
+        const spanText = innerSpan.textContent.trim();
+
+        // Combine before content and span text
+        if (beforeContent && beforeContent !== 'none') {
+          author = beforeContent.replace(/^["']|["']$/g, '').trim()
+            .replace(/^-\s*/, '') + 
+            (spanText ? spanText : ''); // Remove the space before spanText
+        } else {
+          author = spanText.replace(/^-\s*/, '');
+        }
+      }
+
+      return { title, url, author };
+    })
+  });
+  await browser.close();
+}

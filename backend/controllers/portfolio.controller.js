@@ -2,7 +2,8 @@ import Portfolio from "../models/portfolio.model.js";
 import mongoose from "mongoose";
 import { validatePortfolio, validateHolding } from "../utils/portfolioValidation.util.js";
 import puppeteer from 'puppeteer';
-import cheerio from 'cheerio';
+import { load } from 'cheerio';
+import { extract } from 'article-parser';
 
 export const getPortfolios = async (req, res) => {
     try{
@@ -166,58 +167,128 @@ export const deleteHolding = async (req, res) => {
   }
 };
 
-export const getScrape = async (req, res) => {
-  const { articleUrl } = req.body;
-
-  if (!articleUrl) {
-    return res.status(400).json({ error: 'Article URL is required' });
-  }
-
-  try {
-    const browser = await puppeteer.launch({ headless: "new" });
-    const page = await browser.newPage();
-    await page.goto(articleUrl, { waitUntil: 'networkidle0' });
-
-    const content = await page.content();
-    const $ = cheerio.load(content);
-
-    const title = $('title').text().trim();
-    const author = $('meta[name="author"]').attr('content') || ''; // Adjust selector as needed
-    const articleText = $('article').text().trim(); // Adjust selector as needed
-
-    await browser.close();
-
-    res.json({
-      title,
-      author,
-      articleText,
-      articleUrl
-    });
-  } catch (error) {
-    console.error('Error scraping article:', error);
-    res.status(500).json({ error: 'Failed to scrape content' });
-  }
-};
-
 // export const getScrape = async (req, res) => {
 //   const { articleUrl } = req.body;
-//     if (!articleUrl) {
-//       return res.status(400).json({ error: 'Article URL is required' });
-//     }
-  
+
+//   if (!articleUrl) {
+//     return res.status(400).json({ error: 'Article URL is required' });
+//   }
+
+//   try {
+//     // Launch browser & Configure page to mimic a real browser
+//     const browser = await puppeteer.launch({ headless: "new" });
+//     const page = await browser.newPage();
+//     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+    
+//     // Navigate to page
+//     await page.goto(articleUrl, { 
+//       waitUntil: 'networkidle0',
+//       timeout: 30000 
+//     });
+
+//     // Get page content
+//     const content = await page.content();
+//     const $ = load(content);
+
+//     // Multiple strategies for extracting content
+//     let title = '';
+//     let author = '';
+//     let articleText = '';
+
+//     // Strategy 1: Use article-parser for advanced extraction
 //     try {
-//       const browser = await puppeteer.launch({ headless: "new" });
-//       const page = await browser.newPage();
-//       await page.goto(articleUrl, { waitUntil: 'networkidle0' });
-      
-//       const content = await page.content();
-//       const $ = cheerio.load(content);
-//       await browser.close();
-  
-//       const articleText = $('body').text().trim();
-//       res.json({ articleContent: articleText });
-//     } catch (error) {
-//       console.error('Error scraping article:', error);
-//       res.status(500).json({ error: 'Failed to scrape content' });
+//       const parsedArticle = await extract(articleUrl);
+//       title = parsedArticle.title || '';
+//       author = parsedArticle.author || '';
+//       articleText = parsedArticle.content || '';
+//     } catch (parserError) {
+//       console.warn('Article-parser extraction failed, falling back to manual methods');
 //     }
-// }
+
+//     // Strategy 2: If article-parser fails, use multiple selectors
+//     if (!title) {
+//       // Try multiple title selectors
+//       title = $('h1').first().text().trim() || 
+//               $('title').text().trim() || 
+//               $('meta[property="og:title"]').attr('content') || '';
+//     }
+
+//     if (!author) {
+//       // Try multiple author selectors
+//       author = $('meta[name="author"]').attr('content') ||
+//                $('span[class*="author"]').text().trim() ||
+//                $('[itemprop="author"]').text().trim() || '';
+//     }
+
+//     if (!articleText) {
+//       // Try multiple article text selectors
+//       articleText = $('article').text().trim() ||
+//                    $('.article-body').text().trim() ||
+//                    $('#main-content').text().trim() ||
+//                    $('body').text().trim();
+//     }
+
+//     // Close browser
+//     await browser.close();
+
+//     // Basic content cleaning
+//     const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
+
+//     res.json({
+//       title: cleanText(title),
+//       author: cleanText(author),
+//       articleText: cleanText(articleText),
+//       articleUrl
+//     });
+
+//   } catch (error) {
+//     console.error('Error scraping article:', error);
+//     res.status(500).json({ 
+//       error: 'Failed to scrape content', 
+//       details: error.message 
+//     });
+//   }
+// };
+
+
+// Scraper for CNBC articles (title, author & text)
+export const getScrape = async (articleUrl) => {
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.goto(articleUrl, { 
+    waitUntil: 'networkidle0',
+    timeout: 50000 
+  });
+
+  await page.waitForSelector('.ArticleHeader-headline', { timeout: 30000 });
+  const articleTitle = await page.evaluate(() => {
+    const title = document.querySelector('.ArticleHeader-headline');
+    return title ? title.innerText : 'No Title Found';
+  });
+  console.log("Title: ", articleTitle);
+
+  const authorName = await page.evaluate(() => {
+    const author = document.querySelector('.Author-authorName');
+    return author ? author.innerText : 'No Author Found';
+  });
+  console.log("Author: ", authorName);
+
+  // Fetch article text from all <p> tags inside divs with class "group"
+  const articleText = await page.evaluate(() => {
+    const groups = document.querySelectorAll('div.group');
+    
+    // Gather text from all <p> tags inside these groups
+    let textContent = '';
+    groups.forEach(group => {
+      const paragraphs = group.querySelectorAll('p');
+      paragraphs.forEach(p => {
+        textContent += p.innerText + '\n\n'; // Add each paragraph's text followed by two line breaks for readability
+      });
+    });
+    // Trim any leading or trailing whitespace
+    return textContent.trim() || 'No Article Text Found';
+  });
+  console.log("Article Text: ", articleText);
+
+  await browser.close();
+};

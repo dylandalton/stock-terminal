@@ -17,7 +17,7 @@ export const polygonApi = createApi({
     }),
     endpoints: (builder) => ({
         getStockClose: builder.query({
-            query: (symbol) => `/aggs/ticker/${symbol}/prev?adjusted=true&apikey=${API_KEY}`,
+            query: (symbol) => `/v2/aggs/ticker/${symbol}/prev?adjusted=true&apikey=${API_KEY}`,
         }),
         getMultipleStockCloses: builder.query<StockData[], string[]>({
             queryFn: async (symbols, _queryApi, _extraOptions, fetchWithBQ) => {
@@ -25,7 +25,7 @@ export const polygonApi = createApi({
                     const results: StockData[] = [];
                     
                     for (const symbol of symbols) {
-                        const response = await fetchWithBQ(`/aggs/ticker/${symbol}/prev?adjusted=true&apikey=${API_KEY}`);
+                        const response = await fetchWithBQ(`/v2/aggs/ticker/${symbol}/prev?adjusted=true&apikey=${API_KEY}`);
                         
                         if (response.error) {
                             return {

@@ -24,7 +24,8 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
               </TableCaption>
               :
               <TableCaption>
-                Note: Please wait a minute before adding a holding or Polygon.io won't process the request
+                Note: Please wait a minute before adding a holding or Polygon.io won't process the request.
+                Likewise, before navigating to a specific holding's page, please wait 60 seconds
               </TableCaption>
             }
             <TableHeader>

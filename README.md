@@ -41,9 +41,13 @@ APIs: AlphaVantage, Polygon.io
 - [x] Implement Web Scraping endpoint in backend for articles, making use of the response from News endpoint
 - [x] Ensure every news result from the News API response is then used in the web scraping endpoint
 - [x] Implement news section in StockHolding page using Web Scraping
-- [] Allow users to click on an article and be navigated to that website
+- [x] Allow users to click on an article and be navigated to that website
 - [] ensure symbol and company name fields are read only when user clicks buy/sell button
 - [x] Implement spinners instead of static loading text across application
+- [x] Create web scraping controller which retrieves title, author and articleText using an articleUrl
+- [] Create web scraping controller which retrieves three articles from CNBC using a ticker symbol
+- [] Setup a scoring/ratings section on stock holding page
+- [] Create a scoring system criteria, to give each stock an investable rating/score
 
 ## Setting up the project
 Check tailwind setup process for Vite React - config modification required: [tailwind css](https://tailwindcss.com/docs/guides/vite)

@@ -334,9 +334,13 @@ export const scrapeArticles = async (symbol) => {
           author = spanText.replace(/^-\s*/, '');
         }
       }
+      // Skip articles with empty title
+      if (title === ' ') {
+        return null;
+      }
 
       return { title, url, author };
-    })
+    }).filter(article => article !== null); // Filter out null entries
   });
   await browser.close();
 }

@@ -15,6 +15,12 @@ export const getPortfolios = async (req, res) => {
     }
 };
 
+export const testEndpoint = async (req, res) => {
+  const {symbol} = req.params;
+  const words = `Here: ${symbol}`
+  res.status(200).json({success: true, data: words})
+}
+
 export const createPortfolio = async (req, res) => {
     const portfolio = req.body;
 
@@ -167,92 +173,10 @@ export const deleteHolding = async (req, res) => {
   }
 };
 
-// export const getScrape = async (req, res) => {
-//   const { articleUrl } = req.body;
-
-//   if (!articleUrl) {
-//     return res.status(400).json({ error: 'Article URL is required' });
-//   }
-
-//   try {
-//     // Launch browser & Configure page to mimic a real browser
-//     const browser = await puppeteer.launch({ headless: "new" });
-//     const page = await browser.newPage();
-//     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
-    
-//     // Navigate to page
-//     await page.goto(articleUrl, { 
-//       waitUntil: 'networkidle0',
-//       timeout: 30000 
-//     });
-
-//     // Get page content
-//     const content = await page.content();
-//     const $ = load(content);
-
-//     // Multiple strategies for extracting content
-//     let title = '';
-//     let author = '';
-//     let articleText = '';
-
-//     // Strategy 1: Use article-parser for advanced extraction
-//     try {
-//       const parsedArticle = await extract(articleUrl);
-//       title = parsedArticle.title || '';
-//       author = parsedArticle.author || '';
-//       articleText = parsedArticle.content || '';
-//     } catch (parserError) {
-//       console.warn('Article-parser extraction failed, falling back to manual methods');
-//     }
-
-//     // Strategy 2: If article-parser fails, use multiple selectors
-//     if (!title) {
-//       // Try multiple title selectors
-//       title = $('h1').first().text().trim() || 
-//               $('title').text().trim() || 
-//               $('meta[property="og:title"]').attr('content') || '';
-//     }
-
-//     if (!author) {
-//       // Try multiple author selectors
-//       author = $('meta[name="author"]').attr('content') ||
-//                $('span[class*="author"]').text().trim() ||
-//                $('[itemprop="author"]').text().trim() || '';
-//     }
-
-//     if (!articleText) {
-//       // Try multiple article text selectors
-//       articleText = $('article').text().trim() ||
-//                    $('.article-body').text().trim() ||
-//                    $('#main-content').text().trim() ||
-//                    $('body').text().trim();
-//     }
-
-//     // Close browser
-//     await browser.close();
-
-//     // Basic content cleaning
-//     const cleanText = (text) => text.replace(/\s+/g, ' ').trim();
-
-//     res.json({
-//       title: cleanText(title),
-//       author: cleanText(author),
-//       articleText: cleanText(articleText),
-//       articleUrl
-//     });
-
-//   } catch (error) {
-//     console.error('Error scraping article:', error);
-//     res.status(500).json({ 
-//       error: 'Failed to scrape content', 
-//       details: error.message 
-//     });
-//   }
-// };
-
-
 // Scraper for CNBC articles (title, author & text)
-export const getScrape = async (articleUrl) => {
+export const getScrape = async (req, res) => {
+  const {articleUrl} = req.params;
+
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   await page.goto(articleUrl, { 
@@ -289,18 +213,25 @@ export const getScrape = async (articleUrl) => {
     return textContent.trim() || 'No Article Text Found';
   });
   console.log("Article Text: ", articleText);
-
   await browser.close();
+  const response = {
+    title: articleTitle,
+    author: authorName,
+    articleText: articleText,
+    article_url: articleUrl
+  };
+  res.status(200).json(response);
 };
 
-export const scrapeArticles = async (symbol) => {
+export const scrapeArticles = async (req, res) => {
+  const {symbol} = req.params;
   const url = `https://www.cnbc.com/quotes/${symbol}`;
 
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   await page.goto(url, { 
     waitUntil: 'networkidle0',
-    timeout: 50000 
+    timeout: 120000 
   });
 
   const allArticles = await page.evaluate(() => {
@@ -310,7 +241,7 @@ export const scrapeArticles = async (symbol) => {
       const headline = container.querySelector('.LatestNews-headlineWrapper');
       const aTag = headline.querySelector('a');
       const title = aTag ? aTag.title : 'No Title Available';
-      const url = aTag ? aTag.href : 'No Url Available';
+      const url = aTag ? aTag.href : undefined;
 
       // Querying for the author inside the nested spans
       const sourceSpan = headline.querySelector('span');
@@ -343,4 +274,6 @@ export const scrapeArticles = async (symbol) => {
     }).filter(article => article !== null); // Filter out null entries
   });
   await browser.close();
+  res.status(200).json(allArticles);
+  // return allArticles;
 }

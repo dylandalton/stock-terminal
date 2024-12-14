@@ -7,6 +7,7 @@ import deleteModalReducer from './slices/deleteModalSlice';
 import currentHoldingReducer from './slices/currentHoldingSlice';
 import modifyModalReducer from './slices/modifyModalSlice';
 import scrapeReducer from './slices/scrapeSlice';
+import scrapedArticlesReducer from './slices/scrapedArticlesSlice';
 import { polygonApi } from "@/services/PolygonApi";
 import { alphaVantageApi } from "@/services/AlphaVantageApi";
 
@@ -21,7 +22,8 @@ const store = configureStore({
         deleteModal: deleteModalReducer,
         modifyModal: modifyModalReducer,
         currentHolding: currentHoldingReducer,
-        scrape: scrapeReducer
+        scrape: scrapeReducer,
+        scrapeArticles: scrapedArticlesReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(

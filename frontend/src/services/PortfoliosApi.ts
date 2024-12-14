@@ -1,4 +1,6 @@
 import { Holding } from "@/models/User";
+import { ArticlesScrapedResponse } from "@/state/slices/scrapedArticlesSlice";
+import { ArticleScrapeResponse } from "@/state/slices/scrapeSlice";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseUrl = import.meta.env.VITE_PORTFOLIOS_API_URL || '';
@@ -11,6 +13,12 @@ export const portfoliosApi = createApi({
     endpoints: (builder) => ({
       getPortfolios: builder.query({
         query: () => '/',
+      }),
+      getTest: builder.query({
+        query: ({symbol}) =>({
+          url: `/${symbol}`,
+          method: 'GET'
+        })
       }),
       createHolding: builder.mutation<any, { userId: string, holdingData: Holding }>({
         query: ({ userId, holdingData }) => ({
@@ -32,9 +40,12 @@ export const portfoliosApi = createApi({
           body: holdingData
         })
       }),
-      getScrape: builder.query({
+      getScrape: builder.query<ArticleScrapeResponse, string>({
         query: (articleurl) => `/scrape/${articleurl}`
       }),
+      getScrapedArticles: builder.query<ArticlesScrapedResponse[], string>({
+        query: (symbol) => `/scrapedArticles/${symbol}`
+      })
     })
   });
 
@@ -43,5 +54,6 @@ export const {
     useCreateHoldingMutation,
     useDeleteHoldingMutation,
     useUpdateHoldingMutation,
-    useGetScrapeQuery
+    useGetScrapeQuery,
+    useGetScrapedArticlesQuery
 } = portfoliosApi;

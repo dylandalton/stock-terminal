@@ -189,13 +189,11 @@ export const getScrape = async (req, res) => {
     const title = document.querySelector('.ArticleHeader-headline');
     return title ? title.innerText : 'No Title Found';
   });
-  console.log("Title: ", articleTitle);
 
   const authorName = await page.evaluate(() => {
     const author = document.querySelector('.Author-authorName');
     return author ? author.innerText : 'No Author Found';
   });
-  console.log("Author: ", authorName);
 
   // Fetch article text from all <p> tags inside divs with class "group"
   const articleText = await page.evaluate(() => {
@@ -212,7 +210,6 @@ export const getScrape = async (req, res) => {
     // Trim any leading or trailing whitespace
     return textContent.trim() || 'No Article Text Found';
   });
-  console.log("Article Text: ", articleText);
   await browser.close();
   const response = {
     title: articleTitle,

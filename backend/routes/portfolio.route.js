@@ -29,7 +29,7 @@ router.put('/:id/holdings/:symbol', updateHolding);
 router.delete('/:id/holdings/:symbol', deleteHolding);
 
 // Web Scraping endpoint
-router.get('/scrape/:articleUrl', getScrape);
+router.get('/scrape/:articleUrl(*)', getScrape);
 router.get('/scrapedArticles/:symbol', scrapeArticles);
 
 export default router;

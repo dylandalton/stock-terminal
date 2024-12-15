@@ -15,12 +15,6 @@ export const getPortfolios = async (req, res) => {
     }
 };
 
-export const testEndpoint = async (req, res) => {
-  const {symbol} = req.params;
-  const words = `Here: ${symbol}`
-  res.status(200).json({success: true, data: words})
-}
-
 export const createPortfolio = async (req, res) => {
     const portfolio = req.body;
 
@@ -173,58 +167,11 @@ export const deleteHolding = async (req, res) => {
   }
 };
 
-// Scraper for CNBC articles (title, author & text)
-export const getScrape = async (req, res) => {
-  const {articleUrl} = req.params;
-
-  const browser = await puppeteer.launch({ headless: true });
-  const page = await browser.newPage();
-  await page.goto(articleUrl, { 
-    waitUntil: 'networkidle0',
-    timeout: 50000 
-  });
-
-  await page.waitForSelector('.ArticleHeader-headline', { timeout: 30000 });
-  const articleTitle = await page.evaluate(() => {
-    const title = document.querySelector('.ArticleHeader-headline');
-    return title ? title.innerText : 'No Title Found';
-  });
-
-  const authorName = await page.evaluate(() => {
-    const author = document.querySelector('.Author-authorName');
-    return author ? author.innerText : 'No Author Found';
-  });
-
-  // Fetch article text from all <p> tags inside divs with class "group"
-  const articleText = await page.evaluate(() => {
-    const groups = document.querySelectorAll('div.group');
-    
-    // Gather text from all <p> tags inside these groups
-    let textContent = '';
-    groups.forEach(group => {
-      const paragraphs = group.querySelectorAll('p');
-      paragraphs.forEach(p => {
-        textContent += p.innerText + '\n\n'; // Add each paragraph's text followed by two line breaks for readability
-      });
-    });
-    // Trim any leading or trailing whitespace
-    return textContent.trim() || 'No Article Text Found';
-  });
-  await browser.close();
-  const response = {
-    title: articleTitle,
-    author: authorName,
-    articleText: articleText,
-    article_url: articleUrl
-  };
-  res.status(200).json(response);
-};
-
 export const scrapeArticles = async (req, res) => {
   const {symbol} = req.params;
   const url = `https://www.cnbc.com/quotes/${symbol}`;
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const page = await browser.newPage();
   await page.goto(url, { 
     waitUntil: 'networkidle0',
@@ -233,10 +180,13 @@ export const scrapeArticles = async (req, res) => {
 
   const allArticles = await page.evaluate(() => {
     const articles = document.querySelectorAll('.LatestNews-item');
-    return Array.from(articles).slice(0, 3).map((article) => {
+    return Array.from(articles)
+      .slice(0, 3)
+      .map((article) => {
       const container = article.querySelector('.LatestNews-container');
       const headline = container.querySelector('.LatestNews-headlineWrapper');
       const aTag = headline.querySelector('a');
+
       const title = aTag ? aTag.title : 'No Title Available';
       const url = aTag ? aTag.href : undefined;
 
@@ -266,11 +216,11 @@ export const scrapeArticles = async (req, res) => {
       if (title === ' ') {
         return null;
       }
-
-      return { title, url, author };
+      
+      return { title, author, url };
     }).filter(article => article !== null); // Filter out null entries
   });
+
   await browser.close();
   res.status(200).json(allArticles);
-  // return allArticles;
 }

@@ -5,7 +5,7 @@ import { useAppSelector } from "@/lib/hooks/typedHooks"
 import { Newspaper } from 'lucide-react';
 
 export default function CompanyNewsCard() {
-  const scrapedArticles = useAppSelector((state) => state.scrape.scrapedArticles);
+  const scrapedArticlesArray = useAppSelector((state) => state.scrapeArticles.scrapedArticlesArray);
   return (
     <Card className="w-full max-w-4xl my-5">
       <CardHeader className="pb-2">
@@ -17,7 +17,7 @@ export default function CompanyNewsCard() {
       <CardContent>
         <ScrollArea className="h-[400px] pr-4">
           <div className="space-y-4">
-            {scrapedArticles.map((article, index) => (
+            {scrapedArticlesArray.map((article, index) => (
               <NewsArticleCard key={index} {...article} />
             ))}
           </div>

@@ -7,7 +7,7 @@ import { AlphaVantageDailyResponse, DailyData } from '@/models/alphaVantage/Alph
 import { mockPastYearHistoryResponse } from '@/stubs/alphaVantage/stubWeeklyPriceCloses';
 import { mockPastFiveYearsHistoryResponse } from '@/stubs/alphaVantage/stubMonthlyPriceCloses';
 import { StockHistoryResponse, StockPriceData } from '@/models/alphaVantage/AlphaVantage.model';
-import { ArticleScrapeResponse } from '@/state/slices/scrapeSlice';
+// import { ArticleScrapeResponse } from '@/state/slices/scrapeSlice';
 
 const AlphaVantageBaseUrl = import.meta.env.VITE_ALPHAV_API_URL;
 const PortfoliosBaseUrl = import.meta.env.VITE_PORTFOLIOS_API_URL;
@@ -73,21 +73,20 @@ export const handlers = [
   }),
 
   // handler for portfolios API GET scrape request
-  http.get(`${ScrapeBaseUrl}/scrape/*`, ({request}) => {
-    const url = new URL(request.url)
-    const articleurl = url.href;
+  // http.get(`${ScrapeBaseUrl}/scrape/*`, ({request}) => {
+  //   const url = new URL(request.url)
+  //   const articleurl = url.href;
 
-    console.log('MSW intercepted Portfolios Scrape Request: ', articleurl);
+  //   console.log('MSW intercepted Portfolios Scrape Request: ', articleurl);
 
-    const mockArticle: ArticleScrapeResponse = {
-      title: "Mock Article Title",
-      author: "Mock Author",
-      articleText: "This is a mock article description. I am going to fill this article with a bunch of text to see what it will look like inside of the shadcn card component.",
-      article_url: "https://www.investing.com/news/stock-market-news/google-invests-in-intersect-power-in-over-800-million-funding-round-amid-ai-race-3763989"
-    };
+  //   const mockArticle: ArticleScrapeResponse = {
+  //     title: "Mock Article Title",
+  //     author: "Mock Author",
+  //     article_url: "https://www.investing.com/news/stock-market-news/google-invests-in-intersect-power-in-over-800-million-funding-round-amid-ai-race-3763989"
+  //   };
   
-    return HttpResponse.json(mockArticle);
-  }),
+  //   return HttpResponse.json(mockArticle);
+  // }),
 
   // handler for all three AlphaVantage endpoints
   http.get(`${AlphaVantageBaseUrl}`, ({ request }) => {

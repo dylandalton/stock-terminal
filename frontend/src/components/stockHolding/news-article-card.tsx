@@ -1,10 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArticleScrapeResponse } from "@/state/slices/scrapeSlice"
+import { Card, CardHeader, CardTitle } from "@/components/ui/card"
+import { ArticlesScrapedResponse } from "@/state/slices/scrapedArticlesSlice"
 
-export default function NewsArticleCard({ title, author, articleText, article_url }: ArticleScrapeResponse) {
+export default function NewsArticleCard({ title, author, url }: ArticlesScrapedResponse) {
   const handleClick = () => {
-    if(article_url){
-      window.open(article_url, '_blank');
+    if(url){
+      window.open(url, '_blank');
     }
   };
   
@@ -17,9 +17,6 @@ export default function NewsArticleCard({ title, author, articleText, article_ur
         <CardTitle className="text-lg font-semibold">{title}</CardTitle>
         <p className="text-sm text-muted-foreground">By {author}</p>
       </CardHeader>
-      <CardContent>
-        <p className="text-sm">{articleText}</p>
-      </CardContent>
     </Card>
   )
 }

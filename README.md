@@ -44,8 +44,9 @@ APIs: AlphaVantage, Polygon.io
 - [x] Allow users to click on an article and be navigated to that website
 - [] ensure symbol and company name fields are read only when user clicks buy/sell button
 - [x] Implement spinners instead of static loading text across application
-- [x] Create web scraping controller which retrieves title, author and articleText using an articleUrl
-- [] Create web scraping controller which retrieves three articles from CNBC using a ticker symbol
+- [x] Create web scraping controller which retrieves title, author, url using an articleUrl
+- [x] Create web scraping controller which retrieves three articles from CNBC using a ticker symbol
+- [x] update msw handler for web scraping endpoint
 - [] Setup a scoring/ratings section on stock holding page
 - [] Create a scoring system criteria, to give each stock an investable rating/score
 

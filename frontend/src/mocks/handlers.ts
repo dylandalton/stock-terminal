@@ -7,6 +7,7 @@ import { AlphaVantageDailyResponse, DailyData } from '@/models/alphaVantage/Alph
 import { mockPastYearHistoryResponse } from '@/stubs/alphaVantage/stubWeeklyPriceCloses';
 import { mockPastFiveYearsHistoryResponse } from '@/stubs/alphaVantage/stubMonthlyPriceCloses';
 import { StockHistoryResponse, StockPriceData } from '@/models/alphaVantage/AlphaVantage.model';
+import { ArticlesScrapedResponse } from '@/state/slices/scrapedArticlesSlice';
 // import { ArticleScrapeResponse } from '@/state/slices/scrapeSlice';
 
 const AlphaVantageBaseUrl = import.meta.env.VITE_ALPHAV_API_URL;
@@ -72,21 +73,33 @@ export const handlers = [
     return HttpResponse.json(mockResponse);
   }),
 
-  // handler for portfolios API GET scrape request
-  // http.get(`${ScrapeBaseUrl}/scrape/*`, ({request}) => {
-  //   const url = new URL(request.url)
-  //   const articleurl = url.href;
+  // handler for portfolios API GET scrapedArticles request
+  http.get(`${ScrapeBaseUrl}/scrapedArticles/*`, ({request}) => {
+    const url = new URL(request.url)
+    const articleurl = url.href;
 
-  //   console.log('MSW intercepted Portfolios Scrape Request: ', articleurl);
+    console.log('MSW intercepted Portfolios scrapedArticles Request: ', articleurl);
 
-  //   const mockArticle: ArticleScrapeResponse = {
-  //     title: "Mock Article Title",
-  //     author: "Mock Author",
-  //     article_url: "https://www.investing.com/news/stock-market-news/google-invests-in-intersect-power-in-over-800-million-funding-round-amid-ai-race-3763989"
-  //   };
+    const mockArticle: ArticlesScrapedResponse[] = [
+      {
+        title: "Mock Article Title",
+        author: "Mock Author",
+        url: "https://www.cnbc.com/2024/12/14/big-oil-wants-to-help-big-tech-power-artificial-intelligence-data-centers.html"
+      },
+      {
+        title: "Mock Article Title 2",
+        author: "Mock Author 2",
+        url: "https://www.cnbc.com/2024/12/14/big-oil-wants-to-help-big-tech-power-artificial-intelligence-data-centers.html"
+      },
+      {
+        title: "Mock Article Title 3",
+        author: "Mock Author 3",
+        url: "https://www.cnbc.com/2024/12/14/big-oil-wants-to-help-big-tech-power-artificial-intelligence-data-centers.html"
+      },
+  ];
   
-  //   return HttpResponse.json(mockArticle);
-  // }),
+    return HttpResponse.json(mockArticle);
+  }),
 
   // handler for all three AlphaVantage endpoints
   http.get(`${AlphaVantageBaseUrl}`, ({ request }) => {
@@ -144,7 +157,7 @@ export const handlers = [
   }),
 
   // Handler for getMultipleStockCloses - Polygon.io
-  http.get(`${PolygonBaseUrl}/aggs/ticker/:symbol/prev`, ({ params, request }) => {
+  http.get(`${PolygonBaseUrl}/v2/aggs/ticker/:symbol/prev`, ({ params, request }) => {
     const symbol = params.symbol;
     const url = new URL(request.url);
     const apiKey = url.searchParams.get('apikey');

@@ -6,7 +6,12 @@ import store from './state/store';
 import App from './App';
 
 async function enableMocking() {
-  if (import.meta.env.NODE_ENV === 'development' && import.meta.env.VITE_API_MOCK === 'true') { 
+  console.log("Outside: ", import.meta.env.VITE_API_MOCK);
+  console.log("MODE: ", import.meta.env.MODE);
+  console.log("NODE_ENV: ", process.env.NODE_ENV);
+
+  if (import.meta.env.MODE === 'development' && import.meta.env.VITE_API_MOCK === 'true') { 
+    console.log("Inside");
     const { worker } = await import('./mocks/browser')
     // `worker.start()` returns a Promise that resolves
     // once the Service Worker is up and ready to intercept requests.

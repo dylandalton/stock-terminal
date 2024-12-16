@@ -47,6 +47,8 @@ APIs: AlphaVantage, Polygon.io
 - [x] Create web scraping controller which retrieves title, author, url using an articleUrl
 - [x] Create web scraping controller which retrieves three articles from CNBC using a ticker symbol
 - [x] update msw handler for web scraping endpoint
+- [] Create a button on the HomePage which navigates to dividend calendar page
+- [] Create a dividend calendar page
 - [] Setup a scoring/ratings section on stock holding page
 - [] Create a scoring system criteria, to give each stock an investable rating/score
 

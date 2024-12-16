@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { calculateProfitLoss, formatCurrency, formatPercentage } from '../../lib/utils/portfolioCalculations';
 import { Holding } from "@/models/User";
-import { Trash2, CirclePlus, ListPlus } from 'lucide-react';
+import { Trash2, CirclePlus, ListPlus, CalendarFold } from 'lucide-react';
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { toggleAddHoldingModal } from "@/state/slices/addModalSlice";
@@ -87,7 +87,7 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TableCell className="text-centre" colSpan={8}>
+                <TableCell className="text-centre" colSpan={4}>
                   <Button 
                     disabled={positions.length >= 5}
                     variant="login"
@@ -95,6 +95,19 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                   >
                     <CirclePlus />
                     Add an Investment
+                  </Button>
+                </TableCell>
+                <TableCell className="text-centre" colSpan={4}>
+                  <Button 
+                    disabled={positions.length <= 0}
+                    variant="login"
+                  >
+                    <Link
+                      to="/calendar"
+                      className="text-white hover:text-indigo-600 flex items-center"
+                    >
+                      <CalendarFold className="mr-2" /> Dividend Calendar
+                    </Link>
                   </Button>
                 </TableCell>
               </TableRow>

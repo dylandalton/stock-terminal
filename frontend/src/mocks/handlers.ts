@@ -8,12 +8,14 @@ import { mockPastYearHistoryResponse } from '@/stubs/alphaVantage/stubWeeklyPric
 import { mockPastFiveYearsHistoryResponse } from '@/stubs/alphaVantage/stubMonthlyPriceCloses';
 import { StockHistoryResponse, StockPriceData } from '@/models/alphaVantage/AlphaVantage.model';
 import { ArticlesScrapedResponse } from '@/state/slices/scrapedArticlesSlice';
+import { mockDividendHistoryResponse } from '@/stubs/stubFMPDividends';
 // import { ArticleScrapeResponse } from '@/state/slices/scrapeSlice';
 
 const AlphaVantageBaseUrl = import.meta.env.VITE_ALPHAV_API_URL;
 const PortfoliosBaseUrl = import.meta.env.VITE_PORTFOLIOS_API_URL;
 const PolygonBaseUrl = import.meta.env.VITE_POLYGON_API_URL;
 const ScrapeBaseUrl = import.meta.env.VITE_SCRAPE_API_URL;
+const FMPBaseUrl = import.meta.env.VITE_FMP_API_URL;
 
 export const handlers = [
   // handler for getPortfolios - MongoDB
@@ -211,5 +213,13 @@ export const handlers = [
 
     return HttpResponse.json(mockStockNewsResponse);
   }),
-  // https://www.globenewswire.com/news-release/2024/12/06/2993074/0/en/Data-Center-Virtualization-Market-to-Reach-USD-28-9-Billion-by-2032-Driven-by-the-Growing-Need-for-Scalable-Cost-Effective-Infrastructure-Solutions-Research-by-SNS-Insider.html
+
+  // handler for FMP API dividend history GET request
+  http.get(`${FMPBaseUrl}/v3/historical-price-full/stock_dividend/:symbol`, ({params}) => {
+    const { symbol } = params;
+    
+    console.log('MSW Intercepted FMP Dividend History Request', { symbol });
+
+    return HttpResponse.json(mockDividendHistoryResponse);
+  })
 ];

@@ -9,7 +9,6 @@ import { mockPastFiveYearsHistoryResponse } from '@/stubs/alphaVantage/stubMonth
 import { StockHistoryResponse, StockPriceData } from '@/models/alphaVantage/AlphaVantage.model';
 import { ArticlesScrapedResponse } from '@/state/slices/scrapedArticlesSlice';
 import { mockDividendHistoryResponse } from '@/stubs/stubFMPDividends';
-// import { ArticleScrapeResponse } from '@/state/slices/scrapeSlice';
 
 const AlphaVantageBaseUrl = import.meta.env.VITE_ALPHAV_API_URL;
 const PortfoliosBaseUrl = import.meta.env.VITE_PORTFOLIOS_API_URL;
@@ -215,7 +214,7 @@ export const handlers = [
   }),
 
   // handler for FMP API dividend history GET request
-  http.get(`${FMPBaseUrl}/v3/historical-price-full/stock_dividend/:symbol`, ({params}) => {
+  http.get(`${FMPBaseUrl}/v3/historical-price-full/stock_dividend/*`, ({params}) => {
     const { symbol } = params;
     
     console.log('MSW Intercepted FMP Dividend History Request', { symbol });

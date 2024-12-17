@@ -4,12 +4,14 @@ import { DividendHistory } from '@/models/FMP.model';
 import { FMPApi } from '@/services/FMPApi';
 
 interface dividendState {
+    stockSymbols: string[] | null;
     dividendHistory: DividendHistory | null;
     isLoading: boolean;
     error: string | null;
 }
 
 const initialState: dividendState = {
+    stockSymbols: null,
     dividendHistory: null,
     isLoading: false,
     error: null
@@ -38,13 +40,13 @@ const dividendHistorySlice = createSlice({
   name: 'dividendHistory',
   initialState,
   reducers: {
-    setDividendHistory(state, action) {
-      state.dividendHistory = action.payload;
+    setStockSymbols(state, action) {
+      state.stockSymbols = action.payload;
     }
   },
   extraReducers: (builder) => {
     builder
-    .addCase(getDividendHistoryAsync.pending, (state) => {
+      .addCase(getDividendHistoryAsync.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
@@ -59,5 +61,5 @@ const dividendHistorySlice = createSlice({
   },
 });
 
-export const { setDividendHistory } = dividendHistorySlice.actions;
+export const { setStockSymbols } = dividendHistorySlice.actions;
 export default dividendHistorySlice.reducer;

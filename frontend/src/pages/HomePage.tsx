@@ -13,6 +13,8 @@ import ToggleableChart from "@/components/portfolio/ToggleableChart";
 import { closeModifyHoldingModal } from "@/state/slices/modifyModalSlice";
 import { ModifyModal } from "@/components/portfolio/ModifyModal";
 import { Spinner } from "@/components/ui/spinner";
+import { setStockSymbols } from "@/state/slices/dividendHistorySlice";
+import { useEffect } from "react";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -29,6 +31,12 @@ const HomePage = () => {
 
   const holdings: Holding[] = selectedUser?.holdings ?? [];
   const symbols = holdings.map(holding => holding.symbol);
+
+  useEffect(() => {
+    if (symbols.length > 0) {
+      dispatch(setStockSymbols(symbols));
+    }
+  }, [dispatch, symbols]);
 
   const { data, isLoading, error } = useGetMultipleStockClosesQuery(symbols);
 

@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, CircleArrowLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface Dividend {
   symbol: string
@@ -54,7 +55,7 @@ const DividendCalendar: React.FC<DividendCalendarProps> = ({ dividends }) => {
     const days = []
 
     for (let i = 0; i < firstDayOfMonth; i++) {
-      days.push(<div key={`empty-${i}`} className="h-24"></div>)
+      days.push(<div key={`empty-${i}`} className="h-28 w-28"></div>)
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
@@ -65,7 +66,7 @@ const DividendCalendar: React.FC<DividendCalendarProps> = ({ dividends }) => {
         <Popover key={day}>
           <PopoverTrigger asChild>
             <div
-              className={`h-24 border border-gray-200 p-2 cursor-pointer transition-colors ${
+              className={`h-28 w-28 border border-gray-200 p-2 cursor-pointer transition-colors ${
                 hasDividend ? 'bg-green-100 hover:bg-green-200' : 'hover:bg-gray-100'
               }`}
             >
@@ -98,6 +99,7 @@ const DividendCalendar: React.FC<DividendCalendarProps> = ({ dividends }) => {
   }
 
   return (
+    <>
     <Card className="w-full max-w-4xl">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-2xl font-bold">
@@ -123,6 +125,17 @@ const DividendCalendar: React.FC<DividendCalendarProps> = ({ dividends }) => {
         </div>
       </CardContent>
     </Card>
+    <section>
+        <div className="container m-auto py-6 px-6">
+            <Link
+            to="/home"
+            className="text-black hover:text-indigo-600 flex items-center"
+            >
+            <CircleArrowLeft className="mr-2" /> Back to Portfolio Dashboard
+            </Link>
+        </div>
+    </section>
+    </>
   )
 }
 

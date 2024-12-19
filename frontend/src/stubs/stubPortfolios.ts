@@ -12,6 +12,14 @@ export const mockPortfolios: UserData = {
           "companyName": "Nvidia",
           "shares": 7320,
           "averagePrice": 452.57,
+          "purchases": [
+            {
+              "shares": 7319,
+              "price": 451.55,
+              "purchaseDate": "2024-11-28T00:00:00.000Z",
+              "_id": "6748bf211028d5d9fc0ddabc"
+            }
+          ],
           "_id": "674a0133d3a97add6fe706e2"
         },
         {
@@ -19,6 +27,14 @@ export const mockPortfolios: UserData = {
           "companyName": "Alibaba",
           "shares": 1230,
           "averagePrice": 200.5,
+          "purchases": [
+            {
+              "shares": 1233,
+              "price": 200.55,
+              "purchaseDate": "2024-11-28T00:00:00.000Z",
+              "_id": "6748bf211028d5d9fc0ddabd"
+            }
+          ],
           "_id": "674a0133d3a97add6fe706e3"
         }
       ],
@@ -33,6 +49,14 @@ export const mockPortfolios: UserData = {
           "companyName": "Brookfield Corp",
           "shares": 32735883,
           "averagePrice": 53.15,
+          "purchases": [
+            {
+              "shares": 32735885,
+              "price": 53.2,
+              "purchaseDate": "2024-11-28T00:00:00.000Z",
+              "_id": "674a00cad3a97add6fe706d7"
+            }
+          ],
           "_id": "674a00cad3a97add6fe706d9"
         },
         {
@@ -40,6 +64,14 @@ export const mockPortfolios: UserData = {
           "companyName": "Hilton Worldwide Holdings",
           "shares": 7370168,
           "averagePrice": 230.5,
+          "purchases": [
+            {
+              "shares": 7370171,
+              "price": 233.52,
+              "purchaseDate": "2024-11-28T00:00:00.000Z",
+              "_id": "674a00cad3a97add6fe706da"
+            }
+          ],
           "_id": "674a00cad3a97add6fe706d8"
         },
         {
@@ -47,6 +79,14 @@ export const mockPortfolios: UserData = {
           "companyName": "Chipotle Mexican Grill",
           "shares": 28815165,
           "averagePrice": 57.62,
+          "purchases": [
+            {
+              "shares": 28815165,
+              "price": 57.65,
+              "purchaseDate": "2024-11-28T00:00:00.000Z",
+              "_id": "674a00cad3a97add6fe706d9"
+            }
+          ],
           "_id": "674b331ef376fc7db241b00d"
         },
         {
@@ -54,6 +94,14 @@ export const mockPortfolios: UserData = {
           "companyName": "Nike Inc",
           "shares": 16280338,
           "averagePrice": 88.4,
+          "purchases": [
+            {
+              "shares": 16280339,
+              "price": 88.5,
+              "purchaseDate": "2024-11-28T00:00:00.000Z",
+              "_id": "674a00cad3a97add6fe706db"
+            }
+          ],
           "_id": "674a00cad3a97add6fe706d6"
         }
       ],
@@ -68,6 +116,14 @@ export const mockPortfolios: UserData = {
           "companyName": "Baidu Inc",
           "shares": 2450,
           "averagePrice": 79.05,
+          "purchases": [
+            {
+              "shares": 2450,
+              "price": 79.25,
+              "purchaseDate": "2024-11-28T00:00:00.000Z",
+              "_id": "674a02f9d3a97add6fe7070a"
+            }
+          ],
           "_id": "674a02f9d3a97add6fe70708"
         },
         {
@@ -75,6 +131,14 @@ export const mockPortfolios: UserData = {
           "companyName": "TD Inc",
           "shares": 1111,
           "averagePrice": 75.5,
+          "purchases": [
+            {
+              "shares": 1112,
+              "price": 76.22,
+              "purchaseDate": "2024-11-28T00:00:00.000Z",
+              "_id": "674a02f9d3a97add6fe7070b"
+            }
+          ],
           "_id": "674a02f9d3a97add6fe70709"
         }
       ],
@@ -88,6 +152,14 @@ export const mockNewHolding: Holding = {
     companyName: "Visa",
     shares: 1905,
     averagePrice: 162.25,
+    purchases: 
+    [
+      {
+        shares: 2450,
+        price: 79.25,
+        purchaseDate: "2024-11-28T00:00:00.000Z"
+      }
+    ],
   };
   
   export const mockNewHoldingResponse = {

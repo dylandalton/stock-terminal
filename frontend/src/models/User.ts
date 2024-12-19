@@ -1,8 +1,16 @@
+export interface Purchase {
+    shares: number;
+    price: number;
+    purchaseDate: string;
+    _id?: string;
+}
+
 export interface Holding {
     symbol: string;
     companyName?: string;
     shares: number;
     averagePrice: number;
+    purchases: Purchase[]
     _id?: string;
 }
   

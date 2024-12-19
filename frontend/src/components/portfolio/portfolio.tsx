@@ -10,9 +10,56 @@ import { toggleDeleteHoldingModal } from "@/state/slices/deleteModalSlice";
 import { Link } from "react-router-dom";
 import { setCurrentHolding } from "@/state/slices/currentHoldingSlice";
 import { toggleModifyHoldingModal } from "@/state/slices/modifyModalSlice";
+import { useMemo } from "react";
 
 const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
+  console.log('Raw positions data:', JSON.stringify(positions, null, 2));
   const dispatch = useDispatch();
+
+  const totalShares = useMemo(() => {
+    if (!positions || positions.length === 0) return {};
+    
+    return positions.reduce((acc, holding) => {
+      console.log('Processing holding:', holding.symbol);
+      console.log('Purchases array:', holding.purchases);
+      
+      if (holding.purchases && holding.purchases.length > 0) {
+        const totalShares = holding.purchases.reduce((sum, purchase) => {
+          console.log('Adding shares:', purchase.shares);
+          return sum + purchase.shares;
+        }, 0);
+        console.log('Total shares calculated:', totalShares);
+        acc[holding.symbol] = totalShares;
+      } else {
+        console.log('Falling back to holding shares:', holding.shares);
+        acc[holding.symbol] = holding.shares;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+  }, [positions]);
+
+  const averagePrices = useMemo(() => {
+    if (!positions || positions.length === 0) return {};
+    
+    return positions.reduce((acc, holding) => {
+      console.log('Calculating average price for:', holding.symbol);
+      
+      if (holding.purchases && holding.purchases.length > 0) {
+        const totalCost = holding.purchases.reduce((sum, purchase) => {
+          console.log('Purchase cost:', purchase.price * purchase.shares);
+          return sum + (purchase.price * purchase.shares);
+        }, 0);
+        const totalShares = holding.purchases.reduce((sum, purchase) => sum + purchase.shares, 0);
+        const avgPrice = totalCost / totalShares;
+        console.log('Calculated average price:', avgPrice);
+        acc[holding.symbol] = avgPrice;
+      } else {
+        console.log('Falling back to holding average price:', holding.averagePrice);
+        acc[holding.symbol] = holding.averagePrice;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+  }, [positions]);
 
     return (
         <>
@@ -54,12 +101,12 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                       {holding.symbol}
                     </Link>
                   </TableCell>
-                  <TableCell >{holding.shares}</TableCell>
-                  <TableCell>{formatCurrency(holding.averagePrice)}</TableCell>
+                  <TableCell >{totalShares[holding.symbol]}</TableCell>
+                  <TableCell>{formatCurrency(averagePrices[holding.symbol])}</TableCell>
                   <TableCell>{formatCurrency(closes[index])}</TableCell>
 
                   {(() => {
-                    const result = calculateProfitLoss(holding.averagePrice, holding.shares, closes[index], false);
+                    const result = calculateProfitLoss(averagePrices[holding.symbol], totalShares[holding.symbol], closes[index], false);
                     return (
                       <TableCell>
                         {result.profitLoss !== undefined ? formatCurrency(result.profitLoss) : '-'}
@@ -67,7 +114,7 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
                   })()}
 
                   {(() => {
-                    const result = calculateProfitLoss(holding.averagePrice, holding.shares, closes[index], true);
+                    const result = calculateProfitLoss(averagePrices[holding.symbol], totalShares[holding.symbol], closes[index], true);
                     return (
                       <TableCell className={`text-right px-2.5 py-0.5 rounded-full text-sm font-medium ${result.isProfit ? 'text-green-600' : 'text-red-600'}`}>
                         {formatPercentage(result?.percentage ?? 0)}

@@ -13,12 +13,6 @@ export const portfoliosApi = createApi({
       getPortfolios: builder.query({
         query: () => '/',
       }),
-      getTest: builder.query({
-        query: ({symbol}) =>({
-          url: `/${symbol}`,
-          method: 'GET'
-        })
-      }),
       createHolding: builder.mutation<any, { userId: string, holdingData: Holding }>({
         query: ({ userId, holdingData }) => ({
           url: `/${userId}/holdings`,

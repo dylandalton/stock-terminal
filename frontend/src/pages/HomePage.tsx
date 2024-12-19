@@ -31,6 +31,9 @@ const HomePage = () => {
 
   const holdings: Holding[] = selectedUser?.holdings ?? [];
   const symbols = holdings.map(holding => holding.symbol);
+  if(selectedUser){
+    console.log('holdings:', selectedUser);
+  }
 
   useEffect(() => {
     if (symbols.length > 0) {

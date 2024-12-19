@@ -51,8 +51,14 @@ export const mockPortfolios: UserData = {
           "averagePrice": 53.15,
           "purchases": [
             {
-              "shares": 32735885,
+              "shares": 16367942.5,
               "price": 53.2,
+              "purchaseDate": "2024-11-28T00:00:00.000Z",
+              "_id": "674a00cad3a97add6fe706d7"
+            },
+            {
+              "shares": 16367942.5,
+              "price": 50.95,
               "purchaseDate": "2024-11-28T00:00:00.000Z",
               "_id": "674a00cad3a97add6fe706d7"
             }

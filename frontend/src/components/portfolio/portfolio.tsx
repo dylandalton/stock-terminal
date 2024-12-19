@@ -13,25 +13,18 @@ import { toggleModifyHoldingModal } from "@/state/slices/modifyModalSlice";
 import { useMemo } from "react";
 
 const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number[]}) => {
-  console.log('Raw positions data:', JSON.stringify(positions, null, 2));
   const dispatch = useDispatch();
 
   const totalShares = useMemo(() => {
     if (!positions || positions.length === 0) return {};
     
     return positions.reduce((acc, holding) => {
-      console.log('Processing holding:', holding.symbol);
-      console.log('Purchases array:', holding.purchases);
-      
       if (holding.purchases && holding.purchases.length > 0) {
         const totalShares = holding.purchases.reduce((sum, purchase) => {
-          console.log('Adding shares:', purchase.shares);
           return sum + purchase.shares;
         }, 0);
-        console.log('Total shares calculated:', totalShares);
         acc[holding.symbol] = totalShares;
       } else {
-        console.log('Falling back to holding shares:', holding.shares);
         acc[holding.symbol] = holding.shares;
       }
       return acc;
@@ -42,19 +35,14 @@ const Portfolio = ({ positions, closes }: { positions: Holding[], closes: number
     if (!positions || positions.length === 0) return {};
     
     return positions.reduce((acc, holding) => {
-      console.log('Calculating average price for:', holding.symbol);
-      
       if (holding.purchases && holding.purchases.length > 0) {
         const totalCost = holding.purchases.reduce((sum, purchase) => {
-          console.log('Purchase cost:', purchase.price * purchase.shares);
           return sum + (purchase.price * purchase.shares);
         }, 0);
         const totalShares = holding.purchases.reduce((sum, purchase) => sum + purchase.shares, 0);
         const avgPrice = totalCost / totalShares;
-        console.log('Calculated average price:', avgPrice);
         acc[holding.symbol] = avgPrice;
       } else {
-        console.log('Falling back to holding average price:', holding.averagePrice);
         acc[holding.symbol] = holding.averagePrice;
       }
       return acc;

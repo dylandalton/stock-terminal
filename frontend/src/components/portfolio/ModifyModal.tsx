@@ -4,11 +4,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
 import { updateHoldingAsync } from "@/state/slices/userSlice"
 import { useAppDispatch } from "@/lib/hooks/typedHooks"
 import { Holding, Purchase } from "@/models/User"
@@ -32,7 +27,7 @@ export function ModifyModal({ isOpen, onClose, userId, holding }: ModifyModalPro
   const [executionPrice, setExecutionPrice] = useState<FieldState>({ value: 0, touched: false, error: "" })
   const [sharesToModify, setSharesToModify] = useState<FieldState>({ value: 0, touched: false, error: "" })
   const [purchaseDate, setPurchaseDate] = useState<FieldState>({ value: new Date().toISOString().split('T')[0], touched: false, error: "" })
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [date, setDate] = useState<Date>(new Date())
   const [isFormValid, setIsFormValid] = useState(false)
   const holdingId: string = holding?._id!; // Never undefined
 
@@ -108,11 +103,7 @@ export function ModifyModal({ isOpen, onClose, userId, holding }: ModifyModalPro
   const handleInputChange = (setter: React.Dispatch<React.SetStateAction<FieldState>>, value: string | number) => {
     setter(prev => ({ ...prev, value, touched: true }))
   }
-  // Make symbol and companyName readonly
-  // Remove shares & averagePrice fields
-  // Make holding total shares dynamic and adjusts as the user adjusts the shares field
-  // Make holding total average price dynamic and adjusts as the user adjusts the average price field
-  // Add fields for price, shares & purchaseDate
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -145,6 +136,18 @@ export function ModifyModal({ isOpen, onClose, userId, holding }: ModifyModalPro
               />
             </div>
           </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="purchaseDate" className="text-right">Purchase Date</Label>
+            <Input
+              id="purchaseDate"
+              type="date"
+              value={purchaseDate.value?.toString() || ""}
+              onChange={(e) => handleInputChange(setPurchaseDate, e.target.value)}
+              className={`col-span-3 ${purchaseDate.error ? 'border-red-500' : ''}`}
+              required
+            />
+          </div>
+          {purchaseDate.error && <p className="text-red-500 text-sm mt-1 col-span-4">{purchaseDate.error}</p>}
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="executionPrice" className="text-right">
               Execution Price
@@ -203,39 +206,6 @@ export function ModifyModal({ isOpen, onClose, userId, holding }: ModifyModalPro
               step={5}
               className="col-span-3"
             />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="purchaseDate" className="text-right">Purchase Date</Label>
-            <div className="col-span-3">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button 
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : <span>Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      onSelect={(newDate: Date | undefined) => {
-                        setDate(newDate)
-                        if (newDate) {
-                          handleInputChange(setPurchaseDate, newDate.toISOString().split('T')[0])
-                        }
-                      }}
-                      initialFocus
-                    />
-                </PopoverContent>
-              </Popover>
-              {purchaseDate.error && <p className="text-red-500 text-sm mt-1">{purchaseDate.error}</p>}
-            </div>
           </div>
           <Button type="submit" className="mt-4" disabled={!isFormValid}>Add Transaction</Button>
         </form>

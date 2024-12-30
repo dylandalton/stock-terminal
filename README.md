@@ -49,11 +49,12 @@ APIs: AlphaVantage, Polygon.io
 - [x] update msw handler for web scraping endpoint
 - [x] Create a button on the HomePage which navigates to dividend calendar page
 - [x] Create a dividend calendar page
+- [] Update modifyModal so that the user can also add a sell transaction
 - [] Setup dividend income tracker on the homePage using a bar graph
 - [x] Update portfolios model & database to include added fields such as individual transactions
 - [x] Calculate total shares & average price based off holding purchases.
 - [] portfolios API endpoint for update needs changed to add a buy or sell "purchase" to the holding
-- [] Add purchase date field to add/sell investments modals
+- [x] Add purchase date field to add/sell investments modals
 - [] When updating a holding, calculate total holding shares & average price again
 - [] Setup a scoring/ratings section on stock holding page
 - [] Create a scoring system criteria, to give each stock an investable rating/score

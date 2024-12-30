@@ -9,8 +9,12 @@ const DivCalendarPage = () => {
   const dividendQueries = symbols ? symbols.map((symbol) => 
     useGetDividendHistoryQuery(symbol)
   ) : [];
-  const isLoading = dividendQueries.some(query => query.isLoading);
-  const hasError = dividendQueries.some(query => query.error);
+  // const isLoading = dividendQueries.some(query => query.isLoading);
+  // const hasError = dividendQueries.some(query => query.error);
+
+  // Check if dividendQueries is not empty before accessing its properties
+  const isLoading = dividendQueries.length > 0 ? dividendQueries.some(query => query.isLoading) : false;
+  const hasError = dividendQueries.length > 0 ? dividendQueries.some(query => query.error) : false;
 
   const dividends = dividendQueries.flatMap((query, index) => {
     const dividendHistory = query.data;

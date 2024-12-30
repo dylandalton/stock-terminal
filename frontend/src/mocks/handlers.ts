@@ -196,20 +196,29 @@ export const handlers = [
   }),
 
   // handler for Polygon API stock financials GET request
-  http.get(`${PolygonBaseUrl}/vX/reference/financials?ticker=:symbol`, ({ params }) =>{
-    const symbol = params.symbol;
+  http.get(`${PolygonBaseUrl}/vX/reference/financials`, ({ request }) =>{
+    const url = new URL(request.url);
+    const symbol = url.searchParams.get('ticker');
     console.log('MSW Intercepted Polygon Stock Financials Request', { symbol });
     
+    if(!symbol){
+      return HttpResponse.json({ error: 'Missing ticker parameter' }, { status: 400 });
+    }
+
     return HttpResponse.json(mockStockFinancialsResponse);
   }),
 
   // handler for Polygon API stock news GET request
-  http.get(`${PolygonBaseUrl}/v2/reference/news?ticker=:symbol`, ({request}) => {
+  http.get(`${PolygonBaseUrl}/v2/reference/news`, ({request}) => {
     const url = new URL(request.url)
     const symbol = url.searchParams.get('ticker')
     
     console.log('MSW Intercepted Polygon Stock News Request', { symbol });
 
+    if (!symbol) {
+      return HttpResponse.json({ error: 'Missing ticker parameter' }, { status: 400 });
+    }
+  
     return HttpResponse.json(mockStockNewsResponse);
   }),
 

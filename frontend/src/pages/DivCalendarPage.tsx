@@ -1,4 +1,5 @@
 import DividendCalendar from "@/components/calendar/dividend-calendar";
+import DividendBarGraph from "@/components/DividendBarGraph";
 import { Spinner } from "@/components/ui/spinner";
 import { useAppSelector } from "@/lib/hooks/typedHooks";
 import { useGetDividendHistoryQuery } from "@/services/FMPApi";
@@ -9,10 +10,7 @@ const DivCalendarPage = () => {
   const dividendQueries = symbols ? symbols.map((symbol) => 
     useGetDividendHistoryQuery(symbol)
   ) : [];
-  // const isLoading = dividendQueries.some(query => query.isLoading);
-  // const hasError = dividendQueries.some(query => query.error);
 
-  // Check if dividendQueries is not empty before accessing its properties
   const isLoading = dividendQueries.length > 0 ? dividendQueries.some(query => query.isLoading) : false;
   const hasError = dividendQueries.length > 0 ? dividendQueries.some(query => query.error) : false;
 
@@ -38,7 +36,11 @@ const DivCalendarPage = () => {
   }
   return (
     <>
+    <div className="space-y-8">
+      <h1 className="text-2xl font-bold">Dividend Calendar</h1>
+      <DividendBarGraph dividends={dividends} />
       {dividends && <DividendCalendar dividends={dividends}/>}
+    </div>
     </>
   )
 }
